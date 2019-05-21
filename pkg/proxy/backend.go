@@ -25,6 +25,8 @@ import (
 	"github.com/storyicon/gos/pkg/proxy/module"
 )
 
+// Backend implements all the standard interfaces of GOPROXY,
+// which is the upstream of request processing
 type Backend interface {
 	List(ctx *Context)
 	Info(ctx *Context)
@@ -33,6 +35,7 @@ type Backend interface {
 	Zip(ctx *Context)
 }
 
+// Worker is an abstraction of a processing function
 type Worker func(*module.Module) (io.ReadCloser, error)
 
 type gosBackend struct {
@@ -57,22 +60,32 @@ func newGosBackend(c Config) *gosBackend {
 	}
 }
 
+// List is used to list all versions of the specified package
+// It is one of the standard interfaces specified by GOPROXY
 func (b *gosBackend) List(c *Context) {
 	b.RunDefaultWorker(c, b.storage.List, b.upstream.List)
 }
 
+// Info is used to return information about the specified version of the specified package
+// It is one of the standard interfaces specified by GOPROXY
 func (b *gosBackend) Info(c *Context) {
 	b.RunDefaultWorker(c, b.storage.Info, b.upstream.Info)
 }
 
+// Latest is used to return the latest version of the specified package
+// It is one of the standard interfaces specified by GOPROXY
 func (b *gosBackend) Latest(c *Context) {
 	b.RunDefaultWorker(c, b.storage.Latest, b.upstream.Latest)
 }
 
+// Mod is used to return module info about the specified version of the specified package
+// It is one of the standard interfaces specified by GOPROXY
 func (b *gosBackend) Mod(c *Context) {
 	b.RunDefaultWorker(c, b.storage.Mod, b.upstream.Mod)
 }
 
+// Zip is used to return zip file about the specified version of the specified package
+// It is one of the standard interfaces specified by GOPROXY
 func (b *gosBackend) Zip(c *Context) {
 	b.RunWorker(c, b.storage.Zip, b.upstream.Zip, func(closer io.ReadCloser, c *Context) {
 		defer closer.Close()
@@ -86,6 +99,7 @@ func (b *gosBackend) Zip(c *Context) {
 	})
 }
 
+// RunDefaultWorker includes some common operations
 func (b *gosBackend) RunDefaultWorker(c *Context, storageFunc, upstreamFunc Worker) {
 	b.RunWorker(c, storageFunc, upstreamFunc, func(closer io.ReadCloser, c *Context) {
 		defer closer.Close()
@@ -94,6 +108,7 @@ func (b *gosBackend) RunDefaultWorker(c *Context, storageFunc, upstreamFunc Work
 	})
 }
 
+// RunWorker is used to execute a worker
 func (b *gosBackend) RunWorker(c *Context, storageFunc, upstreamFunc Worker, callback func(io.ReadCloser, *Context)) {
 	mod := &c.Module
 	var (

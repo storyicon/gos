@@ -28,6 +28,7 @@ import (
 
 var discard = func(*Context) {}
 
+// Engine controls the operation of the entire Proxy
 type Engine struct {
 	Config
 	backend Backend
@@ -35,6 +36,7 @@ type Engine struct {
 	s       *gin.Engine
 }
 
+// New is used to initialize a user-configured Engine
 func New(config *Config) *Engine {
 	engine := &Engine{}
 	engine.pool.New = func() interface{} {
@@ -53,6 +55,7 @@ func New(config *Config) *Engine {
 	return engine
 }
 
+// Default is used to initialize an Engine with default settings
 func Default() *Engine {
 	c := meta.GetConfig()
 	return New(&Config{
@@ -62,6 +65,7 @@ func Default() *Engine {
 	})
 }
 
+// SetBackend is used to switch backend used by proxy
 func (engine *Engine) SetBackend(backend Backend) {
 	// to protect
 	if engine.backend == nil {
@@ -69,6 +73,7 @@ func (engine *Engine) SetBackend(backend Backend) {
 	}
 }
 
+// GetBackend is used to get the current Backend
 func (engine *Engine) GetBackend() Backend {
 	// Use Default Backend
 	if engine.backend == nil {
@@ -77,11 +82,13 @@ func (engine *Engine) GetBackend() Backend {
 	return engine.backend
 }
 
+// Run is used to start the proxy
 func (engine *Engine) Run() error {
 	logrus.Debugln("Run on:", engine.ListenAddr)
 	return engine.s.Run(engine.ListenAddr)
 }
 
+// Interceptor intercepts all requests to process the GOPROXY part
 func (engine *Engine) Interceptor() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		path, err := module.NewPath(c.Request.URL.Path)
@@ -97,6 +104,7 @@ func (engine *Engine) Interceptor() gin.HandlerFunc {
 	}
 }
 
+// GetHandler chooses which processor to use based on the requested path
 func (engine *Engine) GetHandler(p *module.Path) func(*Context) {
 	backend := engine.GetBackend()
 	switch r := p.GetType(); r {

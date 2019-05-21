@@ -17,15 +17,17 @@
 package env
 
 import (
+	"os"
+
 	"github.com/spf13/cobra"
 	"github.com/storyicon/gos/pkg/util"
-	"os"
 )
 
+// CmdEnv prints Go environment information.
 var CmdEnv = &cobra.Command{
 	Use:   "env [-json] [var ...]",
 	Short: "print Go environment information",
-	Long:  `
+	Long: `
 Env prints Go environment information.
 
 By default env prints information as a shell script
@@ -41,8 +43,8 @@ For more about environment variables, see 'go help environment'.
 	DisableFlagParsing: true,
 }
 
-func init(){
-	CmdEnv.Run = func(cmd *cobra.Command, args []string){
+func init() {
+	CmdEnv.Run = func(cmd *cobra.Command, args []string) {
 		fd := util.GetGoBinaryCMD("env", args)
 		fd.Env = util.GetEnvWithLocalProxy()
 		fd.Stdout = os.Stdout

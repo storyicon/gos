@@ -15,11 +15,13 @@
 package get
 
 import (
+	"os"
+
 	"github.com/spf13/cobra"
 	"github.com/storyicon/gos/pkg/util"
-	"os"
 )
 
+// CmdGet get downloads the packages named by the import paths, along with their dependencies
 var CmdGet = &cobra.Command{
 	Use:   "get [-d] [-f] [-t] [-u] [-v] [-fix] [-insecure] [build flags] [packages]",
 	Short: "download and install packages and dependencies",

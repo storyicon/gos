@@ -38,6 +38,7 @@ import (
 	"github.com/storyicon/gos/cmd/gos/proto"
 )
 
+// CmdRoot is the root command
 var CmdRoot = cobra.Command{
 	Use:   "ROOT Command",
 	Short: "print introduction",

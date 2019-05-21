@@ -35,22 +35,32 @@ func newUpstreamFetcher(upstream string) *upstreamFetcher {
 	}
 }
 
+// List is used to list all versions of the specified package
+// It is one of the standard interfaces specified by GOPROXY
 func (c *upstreamFetcher) List(mod *module.Module) (io.ReadCloser, error) {
 	return c.fetch(mod.GetListAddr)
 }
 
+// Info is used to return information about the specified version of the specified package
+// It is one of the standard interfaces specified by GOPROXY
 func (c *upstreamFetcher) Info(mod *module.Module) (io.ReadCloser, error) {
 	return c.fetch(mod.GetInfoAddr)
 }
 
+// Latest is used to return the latest version of the specified package
+// It is one of the standard interfaces specified by GOPROXY
 func (c *upstreamFetcher) Latest(mod *module.Module) (io.ReadCloser, error) {
 	return c.fetch(mod.GetLatestAddr)
 }
 
+// Mod is used to return module info about the specified version of the specified package
+// It is one of the standard interfaces specified by GOPROXY
 func (c *upstreamFetcher) Mod(mod *module.Module) (io.ReadCloser, error) {
 	return c.fetch(mod.GetModAddr)
 }
 
+// Zip is used to return zip file about the specified version of the specified package
+// It is one of the standard interfaces specified by GOPROXY
 func (c *upstreamFetcher) Zip(mod *module.Module) (io.ReadCloser, error) {
 	return c.fetch(mod.GetZipAddr)
 }

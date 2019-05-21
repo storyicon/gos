@@ -21,6 +21,7 @@ import (
 	"github.com/storyicon/gos/pkg/meta"
 )
 
+// Config contains configuration information for the entire proxy project
 type Config struct {
 	UpstreamAddr string `valid:"url"`
 	ListenAddr   string `valid:"url"`

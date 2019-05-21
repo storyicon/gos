@@ -84,6 +84,8 @@ func Run(cmd *cobra.Command, args []string) {
 	log.Println("Good job, you are ready to go :)")
 }
 
+// WalkIter is used to traverse the current folder and its subfolders,
+// find all proto files and execute the generate command
 func WalkIter() error {
 	dir, err := os.Getwd()
 	if err != nil {
@@ -123,6 +125,8 @@ func WalkIter() error {
 	return errs
 }
 
+// WalkCurrent is used to traverse all proto files
+// in the current folder and execute the generate command
 func WalkCurrent() error {
 	dir, err := os.Getwd()
 	if err != nil {
@@ -162,6 +166,7 @@ func WalkCurrent() error {
 	return errs
 }
 
+// Generate is used to execute the generate command for the specified proto file
 func Generate(proto string) error {
 	path, name := filepath.Split(proto)
 	fd := exec.Command("protoc", []string{

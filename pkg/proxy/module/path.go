@@ -24,6 +24,7 @@ import (
 	"unicode/utf8"
 )
 
+// PathType defines the path type
 type PathType uint8
 
 // Defined a common set of module path types for Module Path

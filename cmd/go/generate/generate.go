@@ -16,17 +16,18 @@
 
 package generate
 
-
 import (
+	"os"
+
 	"github.com/spf13/cobra"
 	"github.com/storyicon/gos/pkg/util"
-	"os"
 )
 
+// CmdGenerate runs commands described by directives within existing files
 var CmdGenerate = &cobra.Command{
 	Use:   "generate [-run regexp] [-n] [-v] [-x] [build flags] [file.go... | packages]",
 	Short: "compile packages and dependencies",
-	Long:  `
+	Long: `
 Generate runs commands described by directives within existing
 files. Those commands can run any process but the intent is to
 create or update Go source files.
@@ -139,8 +140,8 @@ For more about specifying packages, see 'go help packages'.
 	DisableFlagParsing: true,
 }
 
-func init(){
-	CmdGenerate.Run = func(cmd *cobra.Command, args []string){
+func init() {
+	CmdGenerate.Run = func(cmd *cobra.Command, args []string) {
 		fd := util.GetGoBinaryCMD("generate", args)
 		fd.Env = util.GetEnvWithLocalProxy()
 		fd.Stdout = os.Stdout
@@ -148,4 +149,3 @@ func init(){
 		fd.Run()
 	}
 }
-

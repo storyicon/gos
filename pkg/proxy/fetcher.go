@@ -76,6 +76,8 @@ func (c *localFetcher) list(mod *module.Module) (*module.List, error) {
 	return moduleList, err
 }
 
+// List is used to list all versions of the specified package
+// It is one of the standard interfaces specified by GOPROXY
 func (c *localFetcher) List(mod *module.Module) (io.ReadCloser, error) {
 	moduleList, err := c.list(mod)
 	if err != nil {
@@ -85,6 +87,8 @@ func (c *localFetcher) List(mod *module.Module) (io.ReadCloser, error) {
 	return reader, nil
 }
 
+// Info is used to return information about the specified version of the specified package
+// It is one of the standard interfaces specified by GOPROXY
 func (c *localFetcher) Info(mod *module.Module) (io.ReadCloser, error) {
 	info, err := mod.GetStorageInfo(c.GoPath)
 	if err == nil {
@@ -97,6 +101,8 @@ func (c *localFetcher) Info(mod *module.Module) (io.ReadCloser, error) {
 	return mod.GetStorageInfo(c.GoPath)
 }
 
+// Latest is used to return the latest version of the specified package
+// It is one of the standard interfaces specified by GOPROXY
 func (c *localFetcher) Latest(mod *module.Module) (io.ReadCloser, error) {
 	list, err := c.list(mod)
 	if err != nil {
@@ -109,6 +115,8 @@ func (c *localFetcher) Latest(mod *module.Module) (io.ReadCloser, error) {
 	return ioutil.NopCloser(bytes.NewReader(info)), err
 }
 
+// Mod is used to return module info about the specified version of the specified package
+// It is one of the standard interfaces specified by GOPROXY
 func (c *localFetcher) Mod(mod *module.Module) (io.ReadCloser, error) {
 	moduleMod, err := mod.GetStorageMod(c.GoPath)
 	if err == nil {
@@ -122,6 +130,8 @@ func (c *localFetcher) Mod(mod *module.Module) (io.ReadCloser, error) {
 	return mod.GetStorageMod(c.GoPath)
 }
 
+// Zip is used to return zip file about the specified version of the specified package
+// It is one of the standard interfaces specified by GOPROXY
 func (c *localFetcher) Zip(mod *module.Module) (io.ReadCloser, error) {
 	moduleZip, err := mod.GetStorageZip(c.GoPath)
 	if err == nil {

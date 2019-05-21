@@ -15,17 +15,18 @@
 package mod
 
 import (
+	"os"
+
 	"github.com/spf13/cobra"
 	"github.com/storyicon/gos/pkg/util"
-	"os"
 )
 
-
+// CmdMod provides access to operations on modules.
 var CmdMod = &cobra.Command{
 	Use:   "mod",
 	Short: "module maintenance",
 	Long: `
-o mod provides access to operations on modules.
+Go mod provides access to operations on modules.
 
 Note that support for modules is built into all the go commands,
 not just 'go mod'. For example, day-to-day adding, removing, upgrading,
@@ -35,8 +36,8 @@ See 'go help modules' for an overview of module functionality.
 	DisableFlagParsing: true,
 }
 
-func init(){
-	CmdMod.Run = func(cmd *cobra.Command, args []string){
+func init() {
+	CmdMod.Run = func(cmd *cobra.Command, args []string) {
 		fd := util.GetGoBinaryCMD("mod", args)
 		fd.Env = util.GetEnvWithLocalProxy()
 		fd.Stdout = os.Stdout

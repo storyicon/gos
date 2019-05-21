@@ -21,6 +21,7 @@ import (
 	"github.com/storyicon/gos/pkg/proxy/module"
 )
 
+// Context is used to pass variables between processors
 type Context struct {
 	engine *Engine
 	*module.Path

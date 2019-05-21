@@ -16,17 +16,18 @@
 
 package fmt
 
-
 import (
+	"os"
+
 	"github.com/spf13/cobra"
 	"github.com/storyicon/gos/pkg/util"
-	"os"
 )
 
+// CmdFmt runs the command 'gofmt -l -w' on the packages named by the import paths.
 var CmdFmt = &cobra.Command{
 	Use:   "fmt [-n] [-x] [packages]",
 	Short: "gofmt (reformat) package sources",
-	Long:  `
+	Long: `
 Fmt runs the command 'gofmt -l -w' on the packages named
 by the import paths. It prints the names of the files that are modified.
 
@@ -43,8 +44,8 @@ See also: go fix, go vet.
 	DisableFlagParsing: true,
 }
 
-func init(){
-	CmdFmt.Run = func(cmd *cobra.Command, args []string){
+func init() {
+	CmdFmt.Run = func(cmd *cobra.Command, args []string) {
 		fd := util.GetGoBinaryCMD("fmt", args)
 		fd.Env = util.GetEnvWithLocalProxy()
 		fd.Stdout = os.Stdout
@@ -52,4 +53,3 @@ func init(){
 		fd.Run()
 	}
 }
-

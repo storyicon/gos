@@ -16,18 +16,18 @@
 
 package run
 
-
-
 import (
+	"os"
+
 	"github.com/spf13/cobra"
 	"github.com/storyicon/gos/pkg/util"
-	"os"
 )
 
+// CmdRun run compiles and runs the named main Go package
 var CmdRun = &cobra.Command{
 	Use:   "run [build flags] [-exec xprog] package [arguments...]",
 	Short: "compile and run Go program",
-	Long:  `
+	Long: `
 Run compiles and runs the named main Go package.
 Typically the package is specified as a list of .go source files,
 but it may also be an import path, file system path, or pattern
@@ -53,8 +53,8 @@ See also: go build.
 	DisableFlagParsing: true,
 }
 
-func init(){
-	CmdRun.Run = func(cmd *cobra.Command, args []string){
+func init() {
+	CmdRun.Run = func(cmd *cobra.Command, args []string) {
 		fd := util.GetGoBinaryCMD("run", args)
 		fd.Env = util.GetEnvWithLocalProxy()
 		fd.Stdout = os.Stdout
@@ -62,4 +62,3 @@ func init(){
 		fd.Run()
 	}
 }
-

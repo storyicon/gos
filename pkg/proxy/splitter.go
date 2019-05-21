@@ -20,6 +20,7 @@ import (
 	"net/http"
 )
 
+// StreamDestType defines the destination to process the request
 type StreamDestType uint8
 
 // Define a set of common stream dest type
@@ -34,6 +35,8 @@ const (
 	httpsProtocol = "https://"
 )
 
+// StreamSplitter is used to separate requests,
+// it determines whether a goproxy request should use upstream or local
 type StreamSplitter interface {
 	Split(c *Context) StreamDestType
 }
@@ -44,6 +47,7 @@ func newGosStreamSplitter() *gosStreamSplitter {
 	return &gosStreamSplitter{}
 }
 
+// Split is used to determine whether a goproxy request should use upstream or local
 func (s *gosStreamSplitter) Split(c *Context) StreamDestType {
 	addr := c.Module.GetAddr()
 	domain := c.Module.GetDomain()

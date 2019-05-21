@@ -16,17 +16,18 @@
 
 package vet
 
-
 import (
+	"os"
+
 	"github.com/spf13/cobra"
 	"github.com/storyicon/gos/pkg/util"
-	"os"
 )
 
+// CmdVet runs the Go vet command on the packages named by the import paths
 var CmdVet = &cobra.Command{
 	Use:   "vet [-n] [-x] [-vettool prog] [build flags] [vet flags] [packages]",
 	Short: "report likely mistakes in packages",
-	Long:  `
+	Long: `
 Vet runs the Go vet command on the packages named by the import paths.
 
 For more about vet and its flags, see 'go doc cmd/vet'.
@@ -53,8 +54,8 @@ See also: go fmt, go fix.
 	DisableFlagParsing: true,
 }
 
-func init(){
-	CmdVet.Run = func(cmd *cobra.Command, args []string){
+func init() {
+	CmdVet.Run = func(cmd *cobra.Command, args []string) {
 		fd := util.GetGoBinaryCMD("vet", args)
 		fd.Env = util.GetEnvWithLocalProxy()
 		fd.Stdout = os.Stdout
@@ -62,4 +63,3 @@ func init(){
 		fd.Run()
 	}
 }
-

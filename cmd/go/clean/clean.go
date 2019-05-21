@@ -17,15 +17,17 @@
 package clean
 
 import (
+	"os"
+
 	"github.com/spf13/cobra"
 	"github.com/storyicon/gos/pkg/util"
-	"os"
 )
 
+// CmdClean removes object files from package source directories
 var CmdClean = &cobra.Command{
 	Use:   "clean [clean flags] [build flags] [packages]",
 	Short: "remove object files and cached files",
-	Long:  `
+	Long: `
 Clean removes object files from package source directories.
 The go command builds most objects in a temporary directory,
 so go clean is mainly concerned with object files left by other
@@ -78,8 +80,8 @@ For more about specifying packages, see 'go help packages'.
 	DisableFlagParsing: true,
 }
 
-func init(){
-	CmdClean.Run = func(cmd *cobra.Command, args []string){
+func init() {
+	CmdClean.Run = func(cmd *cobra.Command, args []string) {
 		fd := util.GetGoBinaryCMD("clean", args)
 		fd.Env = util.GetEnvWithLocalProxy()
 		fd.Stdout = os.Stdout

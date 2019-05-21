@@ -27,31 +27,37 @@ var defaultSysVar = SystemVar{
 	UpstreamAddr:    "https://athens.azurefd.net",
 }
 
+// SystemVar defines the structure of system variables
 type SystemVar struct {
 	GoBinaryPath    string
 	ProxyListenAddr string
 	UpstreamAddr    string
 }
 
+// LoadConfig is used to load variables info to system variables
 func LoadConfig(variables SystemVar) {
 	v.Store(variables)
 }
 
+// GetConfig is used to obtain the current config
 func GetConfig() SystemVar {
 	return v.Load().(SystemVar)
 }
 
+// SetGoBinaryPath is used to modify the location of go binary files
 func SetGoBinaryPath(path string) {
 	config := GetConfig()
 	config.GoBinaryPath = path
 	LoadConfig(config)
 }
 
+// GetGoBinaryPath is used to get the GoBinaryPath currently configured
 func GetGoBinaryPath() string {
 	config := GetConfig()
 	return config.GoBinaryPath
 }
 
+// GetLocalProxyListenAddr is used to get the ProxyListenAddr currently configured
 func GetLocalProxyListenAddr() string {
 	config := GetConfig()
 	return config.ProxyListenAddr

@@ -15,12 +15,13 @@
 package build
 
 import (
+	"os"
+
 	"github.com/spf13/cobra"
 	"github.com/storyicon/gos/pkg/util"
-	"os"
 )
 
-
+// CmdBuild compiles the packages named by the import paths, along with their dependencies, but it does not install the results.
 var CmdBuild = &cobra.Command{
 	Use:   "build [-o output] [-i] [build flags] [packages]",
 	Short: "compile packages and dependencies",
@@ -147,8 +148,8 @@ See also: go install, go get, go clean.
 	DisableFlagParsing: true,
 }
 
-func init(){
-	CmdBuild.Run = func(cmd *cobra.Command, args []string){
+func init() {
+	CmdBuild.Run = func(cmd *cobra.Command, args []string) {
 		fd := util.GetGoBinaryCMD("build", args)
 		fd.Env = util.GetEnvWithLocalProxy()
 		fd.Stdout = os.Stdout

@@ -16,17 +16,18 @@
 
 package fix
 
-
 import (
+	"os"
+
 	"github.com/spf13/cobra"
 	"github.com/storyicon/gos/pkg/util"
-	"os"
 )
 
+// CmdFix runs the Go fix command on the packages named by the import paths.
 var CmdFix = &cobra.Command{
 	Use:   "fix [packages]",
 	Short: "update packages to use new APIs",
-	Long:  `
+	Long: `
 Fix runs the Go fix command on the packages named by the import paths.
 
 For more about fix, see 'go doc cmd/fix'.
@@ -39,8 +40,8 @@ See also: go fmt, go vet.
 	DisableFlagParsing: true,
 }
 
-func init(){
-	CmdFix.Run = func(cmd *cobra.Command, args []string){
+func init() {
+	CmdFix.Run = func(cmd *cobra.Command, args []string) {
 		fd := util.GetGoBinaryCMD("fix", args)
 		fd.Env = util.GetEnvWithLocalProxy()
 		fd.Stdout = os.Stdout
@@ -48,4 +49,3 @@ func init(){
 		fd.Run()
 	}
 }
-

@@ -25,11 +25,13 @@ import (
 
 const downloadPath = "pkg/mod/cache/download"
 
+// Module defines the structure of package module
 type Module struct {
 	version string
 	addr    string
 }
 
+// NewModule is used to init a module
 func NewModule(addr, version string) *Module {
 	return &Module{
 		addr:    decodePath(cleanPath(addr)),
@@ -37,21 +39,24 @@ func NewModule(addr, version string) *Module {
 	}
 }
 
+// GetAddrWithVersion is used to get the module name with version
 func (m *Module) GetAddrWithVersion() string {
 	return strings.Join([]string{
 		m.addr, "@", m.version,
 	}, "")
 }
 
-
+// GetVersion is used to get the module version
 func (m *Module) GetVersion() string {
 	return m.version
 }
 
+// GetAddr is used to get the module address
 func (m *Module) GetAddr() string {
 	return m.addr
 }
 
+// GetDomain is used to get the domain of remote repo address
 func (m *Module) GetDomain() string {
 	i := strings.Index(m.addr, "/")
 	if i == -1 {
@@ -65,38 +70,47 @@ func (m *Module) GetDomain() string {
 	return domain
 }
 
+// GetListAddr is used to get list address
 func (m *Module) GetListAddr(base string, isUpstream bool) (string, error) {
 	return m.getModuleAddr(base, TypePathList, isUpstream)
 }
 
+// GetInfoAddr is used to get info address
 func (m *Module) GetInfoAddr(base string, isUpstream bool) (string, error) {
 	return m.getModuleAddr(base, TypePathInfo, isUpstream)
 }
 
+// GetLatestAddr is used to get latest address
 func (m *Module) GetLatestAddr(base string, isUpstream bool) (string, error) {
 	return m.getModuleAddr(base, TypePathLatest, isUpstream)
 }
 
+// GetModAddr is used to get mod address
 func (m *Module) GetModAddr(base string, isUpstream bool) (string, error) {
 	return m.getModuleAddr(base, TypePathMod, isUpstream)
 }
 
+// GetZipAddr is used to get zip address
 func (m *Module) GetZipAddr(base string, isUpstream bool) (string, error) {
 	return m.getModuleAddr(base, TypePathZip, isUpstream)
 }
 
+// GetStorageInfo is used to get the info of module from the local storage
 func (m *Module) GetStorageInfo(base string) (io.ReadCloser, error) {
 	return m.getStorage(base, m.GetInfoAddr)
 }
 
+// GetStorageMod is used to get the mod of module from the local storage
 func (m *Module) GetStorageMod(base string) (io.ReadCloser, error) {
 	return m.getStorage(base, m.GetModAddr)
 }
+
+// GetStorageZip is used to get the zip file of module from the local storage
 func (m *Module) GetStorageZip(base string) (io.ReadCloser, error) {
 	return m.getStorage(base, m.GetZipAddr)
 }
 
-func (m *Module) getStorage(base string, addrFunc func(string,bool)(string, error)) (io.ReadCloser, error){
+func (m *Module) getStorage(base string, addrFunc func(string, bool) (string, error)) (io.ReadCloser, error) {
 	addr, err := addrFunc(base, false)
 	if err != nil {
 		return nil, err
@@ -104,7 +118,7 @@ func (m *Module) getStorage(base string, addrFunc func(string,bool)(string, erro
 	return os.Open(addr)
 }
 
-func (m *Module) getModuleAddr(base string, t PathType, isUpstream bool) (rel string,err error) {
+func (m *Module) getModuleAddr(base string, t PathType, isUpstream bool) (rel string, err error) {
 	var n string
 	var sep = "@v"
 	switch t {

@@ -20,6 +20,7 @@ import (
 	"fmt"
 )
 
+// Platform defines the compilation platform
 type Platform struct {
 	OS   string
 	Arch string
@@ -29,6 +30,7 @@ func (p *Platform) String() string {
 	return fmt.Sprintf("%s/%s", p.OS, p.Arch)
 }
 
+// Platforms defines a set of compilation platforms
 type Platforms []Platform
 
 var allPlatforms = Platforms{
@@ -80,6 +82,7 @@ var allPlatforms = Platforms{
 	{"windows", "amd64"},
 }
 
+// FilterByOS filters the platform by type of OS
 func (p Platforms) FilterByOS(os string) (ps Platforms) {
 	for _, v := range p {
 		if v.OS == os {
@@ -89,6 +92,7 @@ func (p Platforms) FilterByOS(os string) (ps Platforms) {
 	return ps
 }
 
+// FilterByArch filters the platform by type of arch
 func (p Platforms) FilterByArch(arch string) (ps Platforms) {
 	for _, v := range p {
 		if v.Arch == arch {

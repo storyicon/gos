@@ -16,22 +16,23 @@
 
 package version
 
-
 import (
+	"os"
+
 	"github.com/spf13/cobra"
 	"github.com/storyicon/gos/pkg/util"
-	"os"
 )
 
+// CmdVersion prints the Go version, as reported by runtime.Version
 var CmdVersion = &cobra.Command{
-	Use:   "version",
-	Short: "print Go version",
-	Long:  `Version prints the Go version, as reported by runtime.Version.`,
+	Use:                "version",
+	Short:              "print Go version",
+	Long:               `Version prints the Go version, as reported by runtime.Version.`,
 	DisableFlagParsing: true,
 }
 
-func init(){
-	CmdVersion.Run = func(cmd *cobra.Command, args []string){
+func init() {
+	CmdVersion.Run = func(cmd *cobra.Command, args []string) {
 		fd := util.GetGoBinaryCMD("version", args)
 		fd.Env = util.GetEnvWithLocalProxy()
 		fd.Stdout = os.Stdout
@@ -39,4 +40,3 @@ func init(){
 		fd.Run()
 	}
 }
-

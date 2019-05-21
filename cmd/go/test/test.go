@@ -17,12 +17,13 @@
 package test
 
 import (
+	"os"
+
 	"github.com/spf13/cobra"
 	"github.com/storyicon/gos/pkg/util"
-	"os"
 )
 
-
+// CmdTest automates testing the packages named by the import paths
 var CmdTest = &cobra.Command{
 	Use:   "test",
 	Short: "test packages",
@@ -146,8 +147,8 @@ See also: go build, go vet.
 	DisableFlagParsing: true,
 }
 
-func init(){
-	CmdTest.Run = func(cmd *cobra.Command, args []string){
+func init() {
+	CmdTest.Run = func(cmd *cobra.Command, args []string) {
 		fd := util.GetGoBinaryCMD("test", args)
 		fd.Env = util.GetEnvWithLocalProxy()
 		fd.Stdout = os.Stdout

@@ -17,16 +17,17 @@
 package doc
 
 import (
+	"os"
+
 	"github.com/spf13/cobra"
 	"github.com/storyicon/gos/pkg/util"
-	"os"
 )
 
-
+// CmdDoc prints the documentation comments associated with the item identified by its arguments
 var CmdDoc = &cobra.Command{
 	Use:   "doc [-u] [-c] [package|[package.]symbol[.methodOrField]]",
 	Short: "show documentation for package or symbol",
-	Long:  `
+	Long: `
 Doc prints the documentation comments associated with the item identified by its
 arguments (a package, const, func, type, var, method, or struct field)
 followed by a one-line summary of each of the first-level items "under"
@@ -139,8 +140,8 @@ Flags:
 	DisableFlagParsing: true,
 }
 
-func init(){
-	CmdDoc.Run = func(cmd *cobra.Command, args []string){
+func init() {
+	CmdDoc.Run = func(cmd *cobra.Command, args []string) {
 		fd := util.GetGoBinaryCMD("doc", args)
 		fd.Env = util.GetEnvWithLocalProxy()
 		fd.Stdout = os.Stdout
