@@ -29,6 +29,7 @@ func TestNewPath(t *testing.T) {
 
 	module, err = NewPath("/<module>/<version>.zip")
 	assert.Equal(t, ErrInvalidPath, err)
+	assert.Equal(t, true, module == nil)
 }
 
 func TestModulePath_getSegments(t *testing.T) {

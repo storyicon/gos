@@ -17,8 +17,9 @@
 package module
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestModule_GetListAddr(t *testing.T) {
@@ -41,52 +42,52 @@ func TestModule_GetListAddr(t *testing.T) {
 			name: "test0",
 			fields: fields{
 				version: "v1.0.0",
-				addr: "github.com/storyicon/graphquery",
+				addr:    "github.com/storyicon/graphquery",
 			},
 			args: args{
-				base: "https://goproxy.io",
+				base:       "https://goproxy.io",
 				isUpstream: true,
 			},
-			want: "https://goproxy.io/github.com/storyicon/graphquery/@v/list",
+			want:    "https://goproxy.io/github.com/storyicon/graphquery/@v/list",
 			wantErr: false,
 		},
 		{
 			name: "test1",
 			fields: fields{
 				version: "v1.0.0",
-				addr: "github.com/storyicon/graphquery",
+				addr:    "github.com/storyicon/graphquery",
 			},
 			args: args{
-				base: "/mnt/f/golang",
+				base:       "/mnt/f/golang",
 				isUpstream: false,
 			},
-			want: "/mnt/f/golang/" + downloadPath + "/github.com/storyicon/graphquery/@v/list",
+			want:    "/mnt/f/golang/" + downloadPath + "/github.com/storyicon/graphquery/@v/list",
 			wantErr: false,
 		},
 		{
 			name: "test2",
 			fields: fields{
 				version: "v1.0.0",
-				addr: "/github.com/storyicon/graphquery",
+				addr:    "/github.com/storyicon/graphquery",
 			},
 			args: args{
-				base: "https://goproxy.io/",
+				base:       "https://goproxy.io/",
 				isUpstream: true,
 			},
-			want: "https://goproxy.io/github.com/storyicon/graphquery/@v/list",
+			want:    "https://goproxy.io/github.com/storyicon/graphquery/@v/list",
 			wantErr: false,
 		},
 		{
 			name: "test3",
 			fields: fields{
 				version: "v1.0.0",
-				addr: "/github.com/storyicon/graphquery",
+				addr:    "/github.com/storyicon/graphquery",
 			},
 			args: args{
-				base: "https://goproxy.io",
+				base:       "https://goproxy.io",
 				isUpstream: true,
 			},
-			want: "https://goproxy.io/github.com/storyicon/graphquery/@v/list",
+			want:    "https://goproxy.io/github.com/storyicon/graphquery/@v/list",
 			wantErr: false,
 		},
 	}
@@ -121,26 +122,26 @@ func TestModule_GetInfoAddr(t *testing.T) {
 			name: "test0",
 			fields: fields{
 				version: "v1.0.0",
-				addr: "github.com/storyicon/graphquery",
+				addr:    "github.com/storyicon/graphquery",
 			},
 			args: args{
-				base: "https://goproxy.io",
+				base:       "https://goproxy.io",
 				isUpstream: true,
 			},
-			want: "https://goproxy.io/github.com/storyicon/graphquery/@v/v1.0.0.info",
+			want:    "https://goproxy.io/github.com/storyicon/graphquery/@v/v1.0.0.info",
 			wantErr: false,
 		},
 		{
 			name: "test1",
 			fields: fields{
 				version: "v1.0.0",
-				addr: "github.com/storyicon/graphquery/",
+				addr:    "github.com/storyicon/graphquery/",
 			},
 			args: args{
-				base: "/mnt/f/golang",
+				base:       "/mnt/f/golang",
 				isUpstream: false,
 			},
-			want: "/mnt/f/golang/" + downloadPath + "/github.com/storyicon/graphquery/@v/v1.0.0.info",
+			want:    "/mnt/f/golang/" + downloadPath + "/github.com/storyicon/graphquery/@v/v1.0.0.info",
 			wantErr: false,
 		},
 	}
@@ -175,26 +176,26 @@ func TestModule_GetLatestAddr(t *testing.T) {
 			name: "test0",
 			fields: fields{
 				version: "v1.0.0",
-				addr: "github.com/storyicon/graphquery",
+				addr:    "github.com/storyicon/graphquery",
 			},
 			args: args{
-				base: "https://goproxy.io",
+				base:       "https://goproxy.io",
 				isUpstream: true,
 			},
-			want: "https://goproxy.io/github.com/storyicon/graphquery/@latest",
+			want:    "https://goproxy.io/github.com/storyicon/graphquery/@latest",
 			wantErr: false,
 		},
 		{
 			name: "test1",
 			fields: fields{
 				version: "v1.0.0",
-				addr: "github.com/storyicon/graphquery/",
+				addr:    "github.com/storyicon/graphquery/",
 			},
 			args: args{
-				base: "/mnt/f/golang",
+				base:       "/mnt/f/golang",
 				isUpstream: false,
 			},
-			want: "/mnt/f/golang/" + downloadPath + "/github.com/storyicon/graphquery/@latest",
+			want:    "/mnt/f/golang/" + downloadPath + "/github.com/storyicon/graphquery/@latest",
 			wantErr: false,
 		},
 	}
@@ -229,26 +230,26 @@ func TestModule_GetModAddr(t *testing.T) {
 			name: "test0",
 			fields: fields{
 				version: "v1.0.0",
-				addr: "github.com/storyicon/Graphquery",
+				addr:    "github.com/storyicon/Graphquery",
 			},
 			args: args{
-				base: "https://goproxy.io",
+				base:       "https://goproxy.io",
 				isUpstream: true,
 			},
-			want: "https://goproxy.io/github.com/storyicon/!graphquery/@v/v1.0.0.mod",
+			want:    "https://goproxy.io/github.com/storyicon/!graphquery/@v/v1.0.0.mod",
 			wantErr: false,
 		},
 		{
 			name: "test1",
 			fields: fields{
 				version: "v1.0.0",
-				addr: "github.com/storyicon/Graphquery/",
+				addr:    "github.com/storyicon/Graphquery/",
 			},
 			args: args{
-				base: "/mnt/f/golang",
+				base:       "/mnt/f/golang",
 				isUpstream: false,
 			},
-			want: "/mnt/f/golang/" + downloadPath + "/github.com/storyicon/!graphquery/@v/v1.0.0.mod",
+			want:    "/mnt/f/golang/" + downloadPath + "/github.com/storyicon/!graphquery/@v/v1.0.0.mod",
 			wantErr: false,
 		},
 	}
@@ -283,26 +284,26 @@ func TestModule_GetZipAddr(t *testing.T) {
 			name: "test0",
 			fields: fields{
 				version: "v1.0.0",
-				addr: "github.com/storyicon/Graphquery",
+				addr:    "github.com/storyicon/Graphquery",
 			},
 			args: args{
-				base: "https://goproxy.io",
+				base:       "https://goproxy.io",
 				isUpstream: true,
 			},
-			want: "https://goproxy.io/github.com/storyicon/!graphquery/@v/v1.0.0.zip",
+			want:    "https://goproxy.io/github.com/storyicon/!graphquery/@v/v1.0.0.zip",
 			wantErr: false,
 		},
 		{
 			name: "test1",
 			fields: fields{
 				version: "v1.0.0",
-				addr: "github.com/storyicon/Graphquery/",
+				addr:    "github.com/storyicon/Graphquery/",
 			},
 			args: args{
-				base: "/mnt/f/golang",
+				base:       "/mnt/f/golang",
 				isUpstream: false,
 			},
-			want: "/mnt/f/golang/" + downloadPath + "/github.com/storyicon/!graphquery/@v/v1.0.0.zip",
+			want:    "/mnt/f/golang/" + downloadPath + "/github.com/storyicon/!graphquery/@v/v1.0.0.zip",
 			wantErr: false,
 		},
 	}
