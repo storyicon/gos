@@ -153,8 +153,7 @@ func (c *localFetcher) prepareEnv() {
 		"GOPATH=" + c.GoPath,
 		"GOPROXY=direct",
 		"GOCACHE=" + filepath.Join(c.GoPath, "cache"),
-		// ? Is it necessary to force GO111MODULE=on
-		"GO111MODULE=",
+		"GO111MODULE=on",
 	}...)
 }
 
