@@ -31,7 +31,7 @@ type List struct {
 	GoMod    string    `json:"GoMod"`
 }
 
-// GetVersions is used to get all valid versions of pacakge
+// GetVersions is used to get all valid versions of package
 func (s *List) GetVersions() Versions {
 	versions := s.Versions
 	if len(versions) == 0 {

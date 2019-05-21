@@ -37,15 +37,15 @@ gos has a few extra commands to enhance your development experience:
   proto      quick and easy compilation of proto files
 ```
 
-You can use `-h` on these sub commands to get more information.
+You can use `-h` on these sub commands to get more information.              
 
 ## 🐋 How to start
 
-This can't be simpler.
-According to your system type, download the zip file from the [release page](https://github.com/storyicon/gos/releases/), unzip, rename the binaries to `gos` and put it in your `$PATH`. Then use `gos` as if you were using the `go` command.
-You can also download the source code and compile it using `go build -o gos main.go`
+This can't be simpler.              
+According to your system type, download the zip file from the [release page](https://github.com/storyicon/gos/releases/), unzip, rename the binaries to `gos` and put it in your `$PATH`. Then use `gos` as if you were using the `go` command.               
+You can also download the source code and compile it using `go build -o gos main.go`                
 
-Note: The prerequisite for gos to work properly is that the [go binary](https://golang.org/dl/) is in your $PATH. If you need to use the `gos proto` command, you need the [protoc binary](https://github.com/protocolbuffers/protobuf/releases) too.
+Note: The prerequisite for gos to work properly is that the [go binary](https://golang.org/dl/) is in your $PATH. If you need to use the `gos proto` command, you need the [protoc binary](https://github.com/protocolbuffers/protobuf/releases) too.              
 
 ## :tangerine: What GOS can do: 
 
