@@ -9,11 +9,11 @@ You can download the compiled binary program here: [Release Page](https://github
 
   - [Brief introduction](#brief-introduction)
   - [How to start](#how-to-start)
-  - [What GOS can do:](#what-gos-can-do)
-          - [1. Fully compatible with Go native commands](#1-fully-compatible-with-go-native-commands)
-          - [2. Simpler Cross-Compilation](#2-simpler-cross-compilation)
-          - [3. Rapid generation of .proto](#3-rapid-generation-of-proto)
-          - [4. Go proxy solution](#4-go-proxy-solution)
+  - [What GOS can do:](#what-gos-can-do)           
+          - [1. Fully compatible with Go native commands](#1-fully-compatible-with-go-native-commands)           
+          - [2. Simpler Cross-Compilation](#2-simpler-cross-compilation)           
+          - [3. Rapid generation of .proto](#3-rapid-generation-of-proto)           
+          - [4. Go proxy solution](#4-go-proxy-solution)           
 
 ### 🦄 Brief introduction
 
@@ -49,7 +49,7 @@ Note: The prerequisite for gos to work properly is that the [go binary](https://
 
 ### :tangerine: What GOS can do: 
 
-##### 1. Fully compatible with Go native commands 
+#### 1. Fully compatible with Go native commands 
 
 You can use `gos` just like you would with the `go` command. Compatible with all flags and arguments, such as the following:
 
@@ -59,7 +59,7 @@ go get -u -v github.com/xxxx/xxxx
 gos get -u -v github.com/xxxx/xxxx
 ```
 
-##### 2. Simpler Cross-Compilation
+#### 2. Simpler Cross-Compilation
 
 You can use `gos cross` command for simpler cross-compilation:
 
@@ -90,7 +90,7 @@ Gos uses parallel compilation, very fast 🚀, but still depends on the configur
 
 more information: `gos cross -h`
 
-##### 3. Rapid generation of .proto
+#### 3. Rapid generation of .proto
 
 This feature may only be useful to RPC developers. You can compile proto files more easily, as follows:
 
@@ -109,7 +109,7 @@ Of course, the precondition is that you have a [protoc binary](https://github.co
 
 more information: `gos proto -h`
 
-##### 4. Go proxy solution
+#### 4. Go proxy solution
 
 There is a dilemma here. If you don't use `GOPROXY`, there may be a large number of Package pull timeouts (network reasons) or non-existence (repository rename, delete or migrate), like the following:
 ```bash
