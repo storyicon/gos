@@ -14,6 +14,28 @@
  * limitations under the License.
  */
 
+/*
+Pacakge main is the starting point of gos program
+
+from now on, use gos instead of go:
+
+	go get => gos get
+	go build => gos build
+	go run => gos run
+	go ... => gos ...
+
+gos is compatible with all go commands and has go mod/get equipped with smart GOPROXY, it automatically distinguishes between private and public repositories and uses GOPROXY to download your lost package when appropriate.
+
+gos has a few extra commands to enhance your development experience:
+
+	cross      agile and fast cross compiling
+	proto      quick and easy compilation of proto files
+	...
+
+You can use -h on these sub commands to get more information.
+
+Project address: https://github.com/storyicon/gos
+*/
 package main
 
 import (
