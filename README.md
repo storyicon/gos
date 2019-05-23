@@ -15,6 +15,9 @@ You can download the compiled binary program here: [Release Page](https://github
           - [3. Rapid generation of .proto](#3-rapid-generation-of-proto)           
           - [4. Go proxy solution](#4-go-proxy-solution)           
 
+> 🌷 Here's something about "GOPROXY supports comma-separated list of URLs": [On GOPROXY]()
+
+
 ## 🦄 Brief introduction
 
 from now on, use gos instead of go:
