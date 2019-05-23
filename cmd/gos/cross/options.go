@@ -16,7 +16,6 @@ package cross
 
 import (
 	"errors"
-	"log"
 	"runtime"
 	"strings"
 )
