@@ -93,7 +93,6 @@ func NewOptions(args []string) (*Options, error) {
 			case 3:
 				options.Arch = arg
 			default:
-				log.Println(">>>> I AM HERE", pos, arg)
 				return nil, ErrTooManyArguments
 			}
 		}

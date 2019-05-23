@@ -87,6 +87,15 @@ gos cross main.go all amd64
 
 # Trying to compile binary files for all platforms and architectures
 gos cross all all
+
+# Compile with standard go build flags
+gos cross -tags="prod" -ldflags="-s -w" -a main.go all all
+
+# Compile with error info printed
+gos cross -e main.go all all
+
+# Compile with CGO enabled
+CGO_ENABLED=1 gos cross all all
 ```
 
 Gos uses parallel compilation, very fast 🚀, but still depends on the configuration of your operating system.
