@@ -3,7 +3,7 @@
 
 ![gos](https://raw.githubusercontent.com/storyicon/gos/master/docs/screenshot/gos.png)
 
-The current gos is still an alpha version, welcome more people to comment and improve it 🍓, you can add more commands to it, or modify something to make it perform better.
+The current gos is still an alpha version, welcome more heroes to comment and improve it 🍓, you can add more commands to it, or modify something to make it perform better.
 
 You can download the compiled binary program here: [Release Page](https://github.com/storyicon/gos/releases/)
 
