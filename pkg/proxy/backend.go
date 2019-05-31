@@ -21,7 +21,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"github.com/storyicon/gos/pkg/proxy/module"
 )
 
@@ -52,6 +52,7 @@ func newGosBackend(c Config) *gosBackend {
 	if err != nil {
 		panic(err)
 	}
+	log.Debugln("upstream address:", c.UpstreamAddr)
 	return &gosBackend{
 		Config:         c,
 		StreamSplitter: splitter,
@@ -116,16 +117,17 @@ func (b *gosBackend) RunWorker(c *Context, storageFunc, upstreamFunc Worker, cal
 		err  error
 	)
 
+	addr := c.Module.GetAddr()
 	if b.Split(c) == StreamDestTypeLocal {
-		logrus.Debugln(">>> ABS LOCAL", c.Module.GetAddr())
+		log.Debugln("abs local:", addr)
 		feed, err = storageFunc(mod)
 	} else {
-		logrus.Debugln(">>> TRY STREAM Start", c.Module.GetAddr())
+		log.Debugln("try upstream:", addr)
 		feed, err = upstreamFunc(mod)
-		logrus.Debugln(">>> TRY STREAM Finish", err)
 		if err != nil {
+			log.Debugf("upstream error: %s %s", addr, err)
 			feed, err = storageFunc(mod)
-			logrus.Debugln(">>> TRY STORAGE", c.Module.GetAddr(), err)
+			log.Debugln("try local", addr, err)
 		}
 	}
 	if err != nil {

@@ -17,6 +17,7 @@
 package util
 
 import (
+	"fmt"
 	"net"
 	"os"
 	"os/exec"
@@ -65,4 +66,15 @@ func RestoreCMDArgs(args []string) []string {
 		r = append(r, arg)
 	}
 	return r
+}
+
+// RunCMDWithExit encapsulates the Run command of exec.CMD
+func RunCMDWithExit(fd *exec.Cmd) {
+	if err := fd.Run(); err != nil {
+		exitError, isOK := err.(*exec.ExitError)
+		if isOK {
+			fmt.Print(exitError)
+			os.Exit(exitError.ExitCode())
+		}
+	}
 }

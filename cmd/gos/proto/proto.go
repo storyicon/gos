@@ -79,6 +79,7 @@ func Run(cmd *cobra.Command, args []string) {
 
 	if err != nil {
 		log.Println(err)
+		os.Exit(1)
 		return
 	}
 	log.Println("Good job, you are ready to go :)")

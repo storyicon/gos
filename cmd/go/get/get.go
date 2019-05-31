@@ -15,10 +15,9 @@
 package get
 
 import (
-	"os"
-
 	"github.com/spf13/cobra"
 	"github.com/storyicon/gos/pkg/util"
+	"os"
 )
 
 // CmdGet get downloads the packages named by the import paths, along with their dependencies
@@ -91,6 +90,6 @@ func init() {
 		fd.Env = util.GetEnvWithLocalProxy()
 		fd.Stdout = os.Stdout
 		fd.Stderr = os.Stderr
-		fd.Run()
+		util.RunCMDWithExit(fd)
 	}
 }

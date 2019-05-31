@@ -84,7 +84,7 @@ func (engine *Engine) GetBackend() Backend {
 
 // Run is used to start the proxy
 func (engine *Engine) Run() error {
-	logrus.Debugln("Run on:", engine.ListenAddr)
+	logrus.Debugln("local proxy run on:", engine.ListenAddr)
 	return engine.s.Run(engine.ListenAddr)
 }
 

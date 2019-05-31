@@ -16,7 +16,16 @@ package meta
 
 import (
 	"net"
+	"os"
 	"sync/atomic"
+
+	log "github.com/sirupsen/logrus"
+)
+
+// Key of Environmental Variables
+const (
+	EnvGosUpstreamAddress = "GOS_UPSTREAM_ADDRESS"
+	EnvGosDebug           = "GOS_DEBUG"
 )
 
 var v atomic.Value
@@ -44,6 +53,13 @@ func GetConfig() SystemVar {
 	return v.Load().(SystemVar)
 }
 
+// SetUpstreamAddr is used to modify the upstream address of gos
+func SetUpstreamAddr(path string) {
+	config := GetConfig()
+	config.UpstreamAddr = path
+	LoadConfig(config)
+}
+
 // SetGoBinaryPath is used to modify the location of go binary files
 func SetGoBinaryPath(path string) {
 	config := GetConfig()
@@ -69,6 +85,18 @@ func init() {
 		panic(err)
 	}
 	defaultSysVar.ProxyListenAddr = address
+
+	upstream := os.Getenv(EnvGosUpstreamAddress)
+	if upstream != "" {
+		defaultSysVar.UpstreamAddr = upstream
+	}
+
+	debug := os.Getenv(EnvGosDebug)
+	if debug != "" {
+		log.SetLevel(log.DebugLevel)
+		log.Debugln("debug mode is on")
+	}
+
 	LoadConfig(defaultSysVar)
 }
 

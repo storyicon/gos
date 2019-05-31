@@ -153,6 +153,6 @@ func init() {
 		fd.Env = util.GetEnvWithLocalProxy()
 		fd.Stdout = os.Stdout
 		fd.Stderr = os.Stderr
-		fd.Run()
+		util.RunCMDWithExit(fd)
 	}
 }
