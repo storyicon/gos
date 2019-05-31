@@ -1,6 +1,6 @@
 ## What's new in `v1.1`
 
-When using GOS for CI in a production environment, we encountered some new requirements, so we made some changes!
+When using `GOS` for CI in a production environment, we encountered some new requirements, so we made some changes!
 If you have any new ideas, let us know!
 
 - [1. Custom upstream proxy address](#011-custom-upstream-proxy-address)
@@ -15,13 +15,13 @@ At present, the default upstream address of `GOS` is `https://athens.azurefd.net
 
 The most popular golang proxies are the following:
 
-name | address | Speed in China | describtion    
-- | - | - | -
-goproxy.io | https://goproxy.io | `0.9` | Fast in China
-gocenter.io | https://gocenter.io | `0.85` | You may encounter many 404 
-goproxy.cn | https://goproxy.cn | `0.8` | Fast in China
-athens | https://athens.azurefd.net | `0.5` | Microsoft Azure engineers provided it
-proxy.golang.org | https://proxy.golang.org | `0` | From Google
+| name | address | Speed in China | describtion |    
+| --- | --- | --- | --- |
+| goproxy.io | https://goproxy.io | `0.9` | Fast in China |
+| gocenter.io | https://gocenter.io | `0.85` | You may encounter many 404 |
+| goproxy.cn | https://goproxy.cn | `0.8` | Fast in China |
+| athens | https://athens.azurefd.net | `0.5` | Microsoft Azure engineers provided it |
+| proxy.golang.org | https://proxy.golang.org | `0` | From Google |
 
 So now you can make `GOS` work better for you by setting the environment variable `GOS_UPSTREAM_ADDRESS`, Like the following:
 
