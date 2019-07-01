@@ -16,7 +16,7 @@ You can download the compiled binary program here: [Release Page](https://github
           - [4. Go proxy solution](#4-go-proxy-solution)           
 
 ## :beer: News
->  Please use golang with version >= `1.12`. [about `go: cannot find main module`](https://github.com/storyicon/gos/blob/master/docs/go-version.md)
+>  :japanese_ogre: Please use golang with version >= `1.12`. [about "go: cannot find main module"](https://github.com/storyicon/gos/blob/master/docs/go-version.md)
 
 > :astonished: Is there still a **dial-tcp-timeout**? Starting with v1.1, you can use GOS_UPSTREAM_ADDRESS to specify the upstream proxy address: [What's new in v1.1](https://github.com/storyicon/gos/blob/master/docs/something-new-in-v1.1.md) (2019-5-30)
 
