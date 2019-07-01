@@ -9,7 +9,7 @@ type FmtFormatter struct{}
 
 // Format implements the interface of logrus Formater
 func (f *FmtFormatter) Format(entry *log.Entry) ([]byte, error) {
-	return []byte(entry.Message + "\r\n"), nil
+	return []byte("gos: " + entry.Message + "\r\n"), nil
 }
 
 func init() {

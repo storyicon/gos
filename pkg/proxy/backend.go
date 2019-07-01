@@ -127,10 +127,11 @@ func (b *gosBackend) RunWorker(c *Context, storageFunc, upstreamFunc Worker, cal
 		if err != nil {
 			log.Debugf("upstream error: %s %s", addr, err)
 			feed, err = storageFunc(mod)
-			log.Debugln("try local", addr, err)
+			log.Debugln("try local", addr)
 		}
 	}
 	if err != nil {
+		log.Debugln(err)
 		c.String(http.StatusInternalServerError, err.Error())
 		return
 	}
