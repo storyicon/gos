@@ -17,17 +17,17 @@
 package install
 
 import (
-	"os"
+    "os"
 
-	"github.com/spf13/cobra"
-	"github.com/storyicon/gos/pkg/util"
+    "github.com/spf13/cobra"
+    "github.com/storyicon/gos/pkg/util"
 )
 
 // CmdInstall compiles and installs the packages named by the import paths.
 var CmdInstall = &cobra.Command{
-	Use:   "install [-i] [build flags] [packages]",
-	Short: "compile and install packages and dependencies",
-	Long: `
+    Use:   "install [-i] [build flags] [packages]",
+    Short: "compile and install packages and dependencies",
+    Long: `
 Install compiles and installs the packages named by the import paths.
 
 The -i flag installs the dependencies of the named packages as well.
@@ -37,15 +37,15 @@ For more about specifying packages, see 'go help packages'.
 
 See also: go build, go get, go clean.
 `,
-	DisableFlagParsing: true,
+    DisableFlagParsing: true,
 }
 
 func init() {
-	CmdInstall.Run = func(cmd *cobra.Command, args []string) {
-		fd := util.GetGoBinaryCMD("install", args)
-		fd.Env = util.GetEnvWithLocalProxy()
-		fd.Stdout = os.Stdout
-		fd.Stderr = os.Stderr
-		util.RunCMDWithExit(fd)
-	}
+    CmdInstall.Run = func(cmd *cobra.Command, args []string) {
+        fd := util.GetGoBinaryCMD("install", args)
+        fd.Env = util.GetEnvWithLocalProxy()
+        fd.Stdout = os.Stdout
+        fd.Stderr = os.Stderr
+        util.RunCMDWithExit(fd)
+    }
 }

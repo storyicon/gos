@@ -17,45 +17,45 @@
 package util
 
 import (
-	"reflect"
-	"testing"
+    "reflect"
+    "testing"
 )
 
 func TestRestoreCMDArgs(t *testing.T) {
-	type args struct {
-		args []string
-	}
-	tests := []struct {
-		name string
-		args args
-		want []string
-	}{
-		{
-			name: "test0",
-			args: args{
-				args: []string{
-					"go", "build", "-tags=prod", "-ldflags=-s -w", "main.go",
-				},
-			},
-			want: []string{
-				"go", "build", `-tags="prod"`, `-ldflags="-s -w"`, "main.go",
-			},
-		},
-		{
-			name: "test0",
-			args: args{
-				args: []string{
-					"go", "get", "github.com/storyicon/graphquery?goget=1",
-				},
-			},
-			want: []string{
-				"go", "get", "github.com/storyicon/graphquery?goget=1",
-			},
-		},
-	}
-	for _, tt := range tests {
-		if got := RestoreCMDArgs(tt.args.args); !reflect.DeepEqual(got, tt.want) {
-			t.Errorf("%q. RestoreCMDArgs() = %v, want %v", tt.name, got, tt.want)
-		}
-	}
+    type args struct {
+        args []string
+    }
+    tests := []struct {
+        name string
+        args args
+        want []string
+    }{
+        {
+            name: "test0",
+            args: args{
+                args: []string{
+                    "go", "build", "-tags=prod", "-ldflags=-s -w", "main.go",
+                },
+            },
+            want: []string{
+                "go", "build", `-tags="prod"`, `-ldflags="-s -w"`, "main.go",
+            },
+        },
+        {
+            name: "test0",
+            args: args{
+                args: []string{
+                    "go", "get", "github.com/storyicon/graphquery?goget=1",
+                },
+            },
+            want: []string{
+                "go", "get", "github.com/storyicon/graphquery?goget=1",
+            },
+        },
+    }
+    for _, tt := range tests {
+        if got := RestoreCMDArgs(tt.args.args); !reflect.DeepEqual(got, tt.want) {
+            t.Errorf("%q. RestoreCMDArgs() = %v, want %v", tt.name, got, tt.want)
+        }
+    }
 }

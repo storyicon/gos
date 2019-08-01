@@ -17,17 +17,17 @@
 package generate
 
 import (
-	"os"
+    "os"
 
-	"github.com/spf13/cobra"
-	"github.com/storyicon/gos/pkg/util"
+    "github.com/spf13/cobra"
+    "github.com/storyicon/gos/pkg/util"
 )
 
 // CmdGenerate runs commands described by directives within existing files
 var CmdGenerate = &cobra.Command{
-	Use:   "generate [-run regexp] [-n] [-v] [-x] [build flags] [file.go... | packages]",
-	Short: "compile packages and dependencies",
-	Long: `
+    Use:   "generate [-run regexp] [-n] [-v] [-x] [build flags] [file.go... | packages]",
+    Short: "compile packages and dependencies",
+    Long: `
 Generate runs commands described by directives within existing
 files. Those commands can run any process but the intent is to
 create or update Go source files.
@@ -38,7 +38,7 @@ and so on. It must be run explicitly.
 Go generate scans the file for directives, which are lines of
 the form,
 
-	//go:generate command argument...
+    //go:generate command argument...
 
 (note: no leading spaces and no space in "//go") where command
 is the generator to be run, corresponding to an executable file
@@ -50,7 +50,7 @@ To convey to humans and machine tools that code is generated,
 generated source should have a line that matches the following
 regular expression (in Go syntax):
 
-	^// Code generated .* DO NOT EDIT\.$
+    ^// Code generated .* DO NOT EDIT\.$
 
 The line may appear anywhere in the file, but is typically
 placed near the beginning so it is easy to find.
@@ -68,18 +68,18 @@ quoted string appears as a single argument to the generator.
 
 Go generate sets several variables when it runs the generator:
 
-	$GOARCH
-		The execution architecture (arm, amd64, etc.)
-	$GOOS
-		The execution operating system (linux, windows, etc.)
-	$GOFILE
-		The base name of the file.
-	$GOLINE
-		The line number of the directive in the source file.
-	$GOPACKAGE
-		The name of the package of the file containing the directive.
-	$DOLLAR
-		A dollar sign.
+    $GOARCH
+        The execution architecture (arm, amd64, etc.)
+    $GOOS
+        The execution operating system (linux, windows, etc.)
+    $GOFILE
+        The base name of the file.
+    $GOLINE
+        The line number of the directive in the source file.
+    $GOPACKAGE
+        The name of the package of the file containing the directive.
+    $DOLLAR
+        A dollar sign.
 
 Other than variable substitution and quoted-string evaluation, no
 special processing such as "globbing" is performed on the command
@@ -95,14 +95,14 @@ empty string.
 
 A directive of the form,
 
-	//go:generate -command xxx args...
+    //go:generate -command xxx args...
 
 specifies, for the remainder of this source file only, that the
 string xxx represents the command identified by the arguments. This
 can be used to create aliases or to handle multiword generators.
 For example,
 
-	//go:generate -command foo go tool foo
+    //go:generate -command foo go tool foo
 
 specifies that the command "foo" represents the generator
 "go tool foo".
@@ -121,11 +121,11 @@ The generator is run in the package's source directory.
 
 Go generate accepts one specific flag:
 
-	-run=""
-		if non-empty, specifies a regular expression to select
-		directives whose full original source text (excluding
-		any trailing spaces and final newline) matches the
-		expression.
+    -run=""
+        if non-empty, specifies a regular expression to select
+        directives whose full original source text (excluding
+        any trailing spaces and final newline) matches the
+        expression.
 
 It also accepts the standard build flags including -v, -n, and -x.
 The -v flag prints the names of packages and files as they are
@@ -137,15 +137,15 @@ For more about build flags, see 'go help build'.
 
 For more about specifying packages, see 'go help packages'.
 `,
-	DisableFlagParsing: true,
+    DisableFlagParsing: true,
 }
 
 func init() {
-	CmdGenerate.Run = func(cmd *cobra.Command, args []string) {
-		fd := util.GetGoBinaryCMD("generate", args)
-		fd.Env = util.GetEnvWithLocalProxy()
-		fd.Stdout = os.Stdout
-		fd.Stderr = os.Stderr
-		util.RunCMDWithExit(fd)
-	}
+    CmdGenerate.Run = func(cmd *cobra.Command, args []string) {
+        fd := util.GetGoBinaryCMD("generate", args)
+        fd.Env = util.GetEnvWithLocalProxy()
+        fd.Stdout = os.Stdout
+        fd.Stderr = os.Stderr
+        util.RunCMDWithExit(fd)
+    }
 }

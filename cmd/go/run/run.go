@@ -17,17 +17,17 @@
 package run
 
 import (
-	"os"
+    "os"
 
-	"github.com/spf13/cobra"
-	"github.com/storyicon/gos/pkg/util"
+    "github.com/spf13/cobra"
+    "github.com/storyicon/gos/pkg/util"
 )
 
 // CmdRun run compiles and runs the named main Go package
 var CmdRun = &cobra.Command{
-	Use:   "run [build flags] [-exec xprog] package [arguments...]",
-	Short: "compile and run Go program",
-	Long: `
+    Use:   "run [build flags] [-exec xprog] package [arguments...]",
+    Short: "compile and run Go program",
+    Long: `
 Run compiles and runs the named main Go package.
 Typically the package is specified as a list of .go source files,
 but it may also be an import path, file system path, or pattern
@@ -35,7 +35,7 @@ matching a single known package, as in 'go run .' or 'go run my/cmd'.
 
 By default, 'go run' runs the compiled binary directly: 'a.out arguments...'.
 If the -exec flag is given, 'go run' invokes the binary using xprog:
-	'xprog a.out arguments...'.
+    'xprog a.out arguments...'.
 If the -exec flag is not given, GOOS or GOARCH is different from the system
 default, and a program named go_$GOOS_$GOARCH_exec can be found
 on the current search path, 'go run' invokes the binary using that program,
@@ -50,15 +50,15 @@ For more about specifying packages, see 'go help packages'.
 
 See also: go build.
 `,
-	DisableFlagParsing: true,
+    DisableFlagParsing: true,
 }
 
 func init() {
-	CmdRun.Run = func(cmd *cobra.Command, args []string) {
-		fd := util.GetGoBinaryCMD("run", args)
-		fd.Env = util.GetEnvWithLocalProxy()
-		fd.Stdout = os.Stdout
-		fd.Stderr = os.Stderr
-		util.RunCMDWithExit(fd)
-	}
+    CmdRun.Run = func(cmd *cobra.Command, args []string) {
+        fd := util.GetGoBinaryCMD("run", args)
+        fd.Env = util.GetEnvWithLocalProxy()
+        fd.Stdout = os.Stdout
+        fd.Stderr = os.Stderr
+        util.RunCMDWithExit(fd)
+    }
 }

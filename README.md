@@ -1,4 +1,4 @@
-# Gos: Armed Golang 💪 `v1.1`
+# Gos: Armed Golang 💪 `v1.2`
 [![CircleCI](https://circleci.com/gh/storyicon/gos/tree/master.svg?style=svg)](https://circleci.com/gh/storyicon/gos/tree/master) [![Go Report Card](https://goreportcard.com/badge/github.com/storyicon/gos)](https://goreportcard.com/report/github.com/storyicon/gos)  [![Build Status](https://travis-ci.org/storyicon/gos.svg?branch=master)](https://travis-ci.org/storyicon/gos) [![GoDoc](https://godoc.org/github.com/storyicon/gos?status.svg)](https://godoc.org/github.com/storyicon/gos) [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/storyicon/Lobby)
 
 ![gos](https://raw.githubusercontent.com/storyicon/gos/master/docs/screenshot/gos.png)
@@ -16,6 +16,8 @@ You can download the compiled binary program here: [Release Page](https://github
           - [4. Go proxy solution](#4-go-proxy-solution)           
 
 ## :beer: News
+> :moon: Some fixes and WebAssembly support. [What's new in v1.2](https://github.com/storyicon/gos/blob/master/docs/something-new-in-v1.2.md) (2019-8-1)                
+
 >  :japanese_ogre: Please use golang with version >= `1.12`. [about "go: cannot find main module"](https://github.com/storyicon/gos/blob/master/docs/go-version.md)
 
 > :astonished: Is there still a **dial-tcp-timeout**? Starting with v1.1, you can use GOS_UPSTREAM_ADDRESS to specify the upstream proxy address: [What's new in v1.1](https://github.com/storyicon/gos/blob/master/docs/something-new-in-v1.1.md) (2019-5-30)

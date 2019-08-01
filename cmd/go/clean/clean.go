@@ -17,17 +17,17 @@
 package clean
 
 import (
-	"os"
+    "os"
 
-	"github.com/spf13/cobra"
-	"github.com/storyicon/gos/pkg/util"
+    "github.com/spf13/cobra"
+    "github.com/storyicon/gos/pkg/util"
 )
 
 // CmdClean removes object files from package source directories
 var CmdClean = &cobra.Command{
-	Use:   "clean [clean flags] [build flags] [packages]",
-	Short: "remove object files and cached files",
-	Long: `
+    Use:   "clean [clean flags] [build flags] [packages]",
+    Short: "remove object files and cached files",
+    Long: `
 Clean removes object files from package source directories.
 The go command builds most objects in a temporary directory,
 so go clean is mainly concerned with object files left by other
@@ -36,17 +36,17 @@ tools or by manual invocations of go build.
 Specifically, clean removes the following files from each of the
 source directories corresponding to the import paths:
 
-	_obj/            old object directory, left from Makefiles
-	_test/           old test directory, left from Makefiles
-	_testmain.go     old gotest file, left from Makefiles
-	test.out         old test log, left from Makefiles
-	build.out        old test log, left from Makefiles
-	*.[568ao]        object files, left from Makefiles
+    _obj/            old object directory, left from Makefiles
+    _test/           old test directory, left from Makefiles
+    _testmain.go     old gotest file, left from Makefiles
+    test.out         old test log, left from Makefiles
+    build.out        old test log, left from Makefiles
+    *.[568ao]        object files, left from Makefiles
 
-	DIR(.exe)        from go build
-	DIR.test(.exe)   from go test -c
-	MAINFILE(.exe)   from go build MAINFILE.go
-	*.so             from SWIG
+    DIR(.exe)        from go build
+    DIR.test(.exe)   from go test -c
+    MAINFILE(.exe)   from go build MAINFILE.go
+    *.so             from SWIG
 
 In the list, DIR represents the final path element of the
 directory, and MAINFILE is the base name of any Go source
@@ -77,15 +77,15 @@ For more about build flags, see 'go help build'.
 
 For more about specifying packages, see 'go help packages'.
 `,
-	DisableFlagParsing: true,
+    DisableFlagParsing: true,
 }
 
 func init() {
-	CmdClean.Run = func(cmd *cobra.Command, args []string) {
-		fd := util.GetGoBinaryCMD("clean", args)
-		fd.Env = util.GetEnvWithLocalProxy()
-		fd.Stdout = os.Stdout
-		fd.Stderr = os.Stderr
-		util.RunCMDWithExit(fd)
-	}
+    CmdClean.Run = func(cmd *cobra.Command, args []string) {
+        fd := util.GetGoBinaryCMD("clean", args)
+        fd.Env = util.GetEnvWithLocalProxy()
+        fd.Stdout = os.Stdout
+        fd.Stderr = os.Stderr
+        util.RunCMDWithExit(fd)
+    }
 }

@@ -17,17 +17,17 @@
 package list
 
 import (
-	"os"
+    "os"
 
-	"github.com/spf13/cobra"
-	"github.com/storyicon/gos/pkg/util"
+    "github.com/spf13/cobra"
+    "github.com/storyicon/gos/pkg/util"
 )
 
 // CmdList lists the named packages, one per line.
 var CmdList = &cobra.Command{
-	Use:   "list [-f format] [-json] [-m] [list flags] [build flags] [packages]",
-	Short: "list packages or modules",
-	Long: `
+    Use:   "list [-f format] [-json] [-m] [list flags] [build flags] [packages]",
+    Short: "list packages or modules",
+    Long: `
 List lists the named packages, one per line.
 The most commonly-used flags are -f and -json, which control the form
 of the output printed for each package. Other list flags, documented below,
@@ -280,15 +280,15 @@ For more about specifying packages, see 'go help packages'.
 
 For more about modules, see 'go help modules'.
 `,
-	DisableFlagParsing: true,
+    DisableFlagParsing: true,
 }
 
 func init() {
-	CmdList.Run = func(cmd *cobra.Command, args []string) {
-		fd := util.GetGoBinaryCMD("list", args)
-		fd.Env = util.GetEnvWithLocalProxy()
-		fd.Stdout = os.Stdout
-		fd.Stderr = os.Stderr
-		util.RunCMDWithExit(fd)
-	}
+    CmdList.Run = func(cmd *cobra.Command, args []string) {
+        fd := util.GetGoBinaryCMD("list", args)
+        fd.Env = util.GetEnvWithLocalProxy()
+        fd.Stdout = os.Stdout
+        fd.Stderr = os.Stderr
+        util.RunCMDWithExit(fd)
+    }
 }

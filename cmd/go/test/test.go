@@ -17,24 +17,24 @@
 package test
 
 import (
-	"os"
+    "os"
 
-	"github.com/spf13/cobra"
-	"github.com/storyicon/gos/pkg/util"
+    "github.com/spf13/cobra"
+    "github.com/storyicon/gos/pkg/util"
 )
 
 // CmdTest automates testing the packages named by the import paths
 var CmdTest = &cobra.Command{
-	Use:   "test",
-	Short: "test packages",
-	Long: `
+    Use:   "test",
+    Short: "test packages",
+    Long: `
 'Go test' automates testing the packages named by the import paths.
 It prints a summary of the test results in the format:
 
-	ok   archive/tar   0.011s
-	FAIL archive/zip   0.022s
-	ok   compress/gzip 0.033s
-	...
+    ok   archive/tar   0.011s
+    FAIL archive/zip   0.022s
+    ok   compress/gzip 0.033s
+    ...
 
 followed by detailed output for each failed package.
 
@@ -109,32 +109,32 @@ regardless of -timeout setting.
 
 In addition to the build flags, the flags handled by 'go test' itself are:
 
-	-args
-	    Pass the remainder of the command line (everything after -args)
-	    to the test binary, uninterpreted and unchanged.
-	    Because this flag consumes the remainder of the command line,
-	    the package list (if present) must appear before this flag.
+    -args
+        Pass the remainder of the command line (everything after -args)
+        to the test binary, uninterpreted and unchanged.
+        Because this flag consumes the remainder of the command line,
+        the package list (if present) must appear before this flag.
 
-	-c
-	    Compile the test binary to pkg.test but do not run it
-	    (where pkg is the last element of the package's import path).
-	    The file name can be changed with the -o flag.
+    -c
+        Compile the test binary to pkg.test but do not run it
+        (where pkg is the last element of the package's import path).
+        The file name can be changed with the -o flag.
 
-	-exec xprog
-	    Run the test binary using xprog. The behavior is the same as
-	    in 'go run'. See 'go help run' for details.
+    -exec xprog
+        Run the test binary using xprog. The behavior is the same as
+        in 'go run'. See 'go help run' for details.
 
-	-i
-	    Install packages that are dependencies of the test.
-	    Do not run the test.
+    -i
+        Install packages that are dependencies of the test.
+        Do not run the test.
 
-	-json
-	    Convert test output to JSON suitable for automated processing.
-	    See 'go doc test2json' for the encoding details.
+    -json
+        Convert test output to JSON suitable for automated processing.
+        See 'go doc test2json' for the encoding details.
 
-	-o file
-	    Compile the test binary to the named file.
-	    The test still runs (unless -c or -i is specified).
+    -o file
+        Compile the test binary to the named file.
+        The test still runs (unless -c or -i is specified).
 
 The test binary also accepts flags that control execution of the test; these
 flags are also accessible by 'go test'. See 'go help testflag' for details.
@@ -144,15 +144,15 @@ For more about specifying packages, see 'go help packages'.
 
 See also: go build, go vet.
 `,
-	DisableFlagParsing: true,
+    DisableFlagParsing: true,
 }
 
 func init() {
-	CmdTest.Run = func(cmd *cobra.Command, args []string) {
-		fd := util.GetGoBinaryCMD("test", args)
-		fd.Env = util.GetEnvWithLocalProxy()
-		fd.Stdout = os.Stdout
-		fd.Stderr = os.Stderr
-		util.RunCMDWithExit(fd)
-	}
+    CmdTest.Run = func(cmd *cobra.Command, args []string) {
+        fd := util.GetGoBinaryCMD("test", args)
+        fd.Env = util.GetEnvWithLocalProxy()
+        fd.Stdout = os.Stdout
+        fd.Stderr = os.Stderr
+        util.RunCMDWithExit(fd)
+    }
 }

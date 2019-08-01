@@ -17,18 +17,18 @@
 package proxy
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/storyicon/gos/pkg/proxy/module"
+    "github.com/gin-gonic/gin"
+    "github.com/storyicon/gos/pkg/proxy/module"
 )
 
 // Context is used to pass variables between processors
 type Context struct {
-	engine *Engine
-	*module.Path
-	*gin.Context
+    engine *Engine
+    *module.Path
+    *gin.Context
 }
 
 func (c *Context) reset() {
-	c.Path = nil
-	c.Context = nil
+    c.Path = nil
+    c.Context = nil
 }

@@ -17,7 +17,7 @@
 package proxy
 
 import (
-	"net/http"
+    "net/http"
 )
 
 // StreamDestType defines the destination to process the request
@@ -25,50 +25,46 @@ type StreamDestType uint8
 
 // Define a set of common stream dest type
 const (
-	StreamDestTypeUnknown StreamDestType = iota
-	StreamDestTypeLocal
-	StreamDestTypeUpstream
+    StreamDestTypeUnknown StreamDestType = iota
+    StreamDestTypeLocal
+    StreamDestTypeUpstream
 )
 
 const (
-	httpProtocol  = "http://"
-	httpsProtocol = "https://"
+    httpProtocol  = "http://"
+    httpsProtocol = "https://"
 )
 
 // StreamSplitter is used to separate requests,
 // it determines whether a goproxy request should use upstream or local
 type StreamSplitter interface {
-	Split(c *Context) StreamDestType
+    Split(c *Context) StreamDestType
 }
 
 type gosStreamSplitter struct{}
 
 func newGosStreamSplitter() *gosStreamSplitter {
-	return &gosStreamSplitter{}
+    return &gosStreamSplitter{}
 }
 
 // Split is used to determine whether a goproxy request should use upstream or local
 func (s *gosStreamSplitter) Split(c *Context) StreamDestType {
-	addr := c.Module.GetAddr()
-	domain := c.Module.GetDomain()
-	switch domain {
-	case "github.com":
-		return s.githubSplit(addr)
-	case "golang.org":
-		return StreamDestTypeUpstream
-	default:
-		return StreamDestTypeUpstream
-	}
+    domain := c.Module.GetDomain()
+    switch domain {
+    // case for special uses
+    default:
+        return StreamDestTypeUpstream
+    }
 }
 
 func (s *gosStreamSplitter) ping(addr string) StreamDestType {
-	resp, err := http.Head(addr)
-	if err != nil || resp.StatusCode != 200 {
-		return StreamDestTypeLocal
-	}
-	return StreamDestTypeUpstream
+    resp, err := http.Head(addr)
+    if err != nil || resp.StatusCode != 200 {
+        return StreamDestTypeLocal
+    }
+    return StreamDestTypeUpstream
 }
 
 func (s *gosStreamSplitter) githubSplit(addr string) StreamDestType {
-	return s.ping(httpsProtocol + addr)
+    return s.ping(httpsProtocol + addr)
 }

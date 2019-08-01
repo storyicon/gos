@@ -17,64 +17,64 @@
 package util
 
 import (
-	"fmt"
-	"net"
-	"os"
-	"os/exec"
+    "fmt"
+    "net"
+    "os"
+    "os/exec"
 
-	"strings"
+    "strings"
 
-	"github.com/storyicon/gos/pkg/meta"
+    "github.com/storyicon/gos/pkg/meta"
 )
 
 // Prepend is used to prepend a string type element into []string
 func Prepend(arr []string, ele string) []string {
-	return append([]string{ele}, arr...)
+    return append([]string{ele}, arr...)
 }
 
 // GetGoBinaryCMD is used to get *exec.Cmd with go command
 func GetGoBinaryCMD(subcmd string, args []string) *exec.Cmd {
-	binary := meta.GetGoBinaryPath()
-	return exec.Command(binary, Prepend(args, subcmd)...)
+    binary := meta.GetGoBinaryPath()
+    return exec.Command(binary, Prepend(args, subcmd)...)
 }
 
 // GetEnvWithLocalProxy is used to get env with go proxy
 func GetEnvWithLocalProxy() []string {
-	proxy := meta.GetLocalProxyListenAddr()
-	_, port, _ := net.SplitHostPort(proxy)
-	return append(os.Environ(), "GOPROXY=http://127.0.0.1:"+port)
+    proxy := meta.GetLocalProxyListenAddr()
+    _, port, _ := net.SplitHostPort(proxy)
+    return append(os.Environ(), "GOPROXY=http://127.0.0.1:"+port)
 }
 
 // GetEnvWithoutGoProxy is used to get env without go proxy
 func GetEnvWithoutGoProxy() []string {
-	return append(os.Environ(), "GOPROXY=")
+    return append(os.Environ(), "GOPROXY=")
 }
 
 // RestoreCMDArgs is used to convert command line parameters
 func RestoreCMDArgs(args []string) []string {
-	var r []string
-	for _, arg := range args {
-		if len(arg) > 0 && arg[0] == '-' {
-			if i := strings.Index(arg, "="); i != -1 {
-				symbol := `"`
-				if strings.Contains(arg[i:], `"`) {
-					symbol = `'`
-				}
-				arg = arg[:i+1] + symbol + arg[i+1:] + symbol
-			}
-		}
-		r = append(r, arg)
-	}
-	return r
+    var r []string
+    for _, arg := range args {
+        if len(arg) > 0 && arg[0] == '-' {
+            if i := strings.Index(arg, "="); i != -1 {
+                symbol := `"`
+                if strings.Contains(arg[i:], `"`) {
+                    symbol = `'`
+                }
+                arg = arg[:i+1] + symbol + arg[i+1:] + symbol
+            }
+        }
+        r = append(r, arg)
+    }
+    return r
 }
 
 // RunCMDWithExit encapsulates the Run command of exec.CMD
 func RunCMDWithExit(fd *exec.Cmd) {
-	if err := fd.Run(); err != nil {
-		exitError, isOK := err.(*exec.ExitError)
-		if isOK {
-			fmt.Print(exitError)
-			os.Exit(exitError.ExitCode())
-		}
-	}
+    if err := fd.Run(); err != nil {
+        exitError, isOK := err.(*exec.ExitError)
+        if isOK {
+            fmt.Print(exitError)
+            os.Exit(exitError.ExitCode())
+        }
+    }
 }

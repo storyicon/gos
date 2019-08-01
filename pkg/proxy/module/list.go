@@ -17,32 +17,32 @@
 package module
 
 import (
-	"strings"
-	"time"
+    "strings"
+    "time"
 )
 
 // List is the standard return value, which corresponds to the go list -json command.
 type List struct {
-	Path     string    `json:"Path"`
-	Version  string    `json:"Version"`
-	Versions Versions  `json:",omitempty"`
-	Time     time.Time `json:"time"`
-	Dir      string    `json:"Dir"`
-	GoMod    string    `json:"GoMod"`
+    Path     string    `json:"Path"`
+    Version  string    `json:"Version"`
+    Versions Versions  `json:",omitempty"`
+    Time     time.Time `json:"time"`
+    Dir      string    `json:"Dir"`
+    GoMod    string    `json:"GoMod"`
 }
 
 // GetVersions is used to get all valid versions of package
 func (s *List) GetVersions() Versions {
-	versions := s.Versions
-	if len(versions) == 0 {
-		versions = append(versions, s.Version)
-	}
-	return versions
+    versions := s.Versions
+    if len(versions) == 0 {
+        versions = append(versions, s.Version)
+    }
+    return versions
 }
 
 // Versions is the slice of version
 type Versions []string
 
 func (v Versions) String() string {
-	return strings.Join(v, "\r\n")
+    return strings.Join(v, "\r\n")
 }

@@ -17,125 +17,125 @@
 package proxy
 
 import (
-	"io/ioutil"
-	"sync"
+    "io/ioutil"
+    "sync"
 
-	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
-	"github.com/storyicon/gos/pkg/meta"
-	"github.com/storyicon/gos/pkg/proxy/module"
+    "github.com/gin-gonic/gin"
+    "github.com/sirupsen/logrus"
+    "github.com/storyicon/gos/pkg/meta"
+    "github.com/storyicon/gos/pkg/proxy/module"
 )
 
 var discard = func(*Context) {}
 
 // Engine controls the operation of the entire Proxy
 type Engine struct {
-	Config
-	backend Backend
-	pool    sync.Pool
-	s       *gin.Engine
+    Config
+    backend Backend
+    pool    sync.Pool
+    s       *gin.Engine
 }
 
 // New is used to initialize a user-configured Engine
 func New(config *Config) *Engine {
-	engine := &Engine{}
-	engine.pool.New = func() interface{} {
-		return engine.allocateContext()
-	}
+    engine := &Engine{}
+    engine.pool.New = func() interface{} {
+        return engine.allocateContext()
+    }
 
-	s := gin.New()
-	s.Use(engine.Interceptor())
-	err := config.fix()
-	if err != nil {
-		panic(err)
-	}
+    s := gin.New()
+    s.Use(engine.Interceptor())
+    err := config.fix()
+    if err != nil {
+        panic(err)
+    }
 
-	engine.s = s
-	engine.Config = *config
-	return engine
+    engine.s = s
+    engine.Config = *config
+    return engine
 }
 
 // Default is used to initialize an Engine with default settings
 func Default() *Engine {
-	c := meta.GetConfig()
-	return New(&Config{
-		GoBinaryPath: c.GoBinaryPath,
-		UpstreamAddr: c.UpstreamAddr,
-		ListenAddr:   c.ProxyListenAddr,
-	})
+    c := meta.GetConfig()
+    return New(&Config{
+        GoBinaryPath: c.GoBinaryPath,
+        UpstreamAddr: c.UpstreamAddr,
+        ListenAddr:   c.ProxyListenAddr,
+    })
 }
 
 // SetBackend is used to switch backend used by proxy
 func (engine *Engine) SetBackend(backend Backend) {
-	// to protect
-	if engine.backend == nil {
-		engine.backend = backend
-	}
+    // to protect
+    if engine.backend == nil {
+        engine.backend = backend
+    }
 }
 
 // GetBackend is used to get the current Backend
 func (engine *Engine) GetBackend() Backend {
-	// Use Default Backend
-	if engine.backend == nil {
-		engine.backend = newGosBackend(engine.Config)
-	}
-	return engine.backend
+    // Use Default Backend
+    if engine.backend == nil {
+        engine.backend = newGosBackend(engine.Config)
+    }
+    return engine.backend
 }
 
 // Run is used to start the proxy
 func (engine *Engine) Run() error {
-	logrus.Debugln("local proxy run on:", engine.ListenAddr)
-	return engine.s.Run(engine.ListenAddr)
+    logrus.Debugln("local proxy run on:", engine.ListenAddr)
+    return engine.s.Run(engine.ListenAddr)
 }
 
 // Interceptor intercepts all requests to process the GOPROXY part
 func (engine *Engine) Interceptor() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		path, err := module.NewPath(c.Request.URL.Path)
-		if err != nil {
-			return
-		}
-		ctx := engine.createContext(path, c)
-		defer func() {
-			ctx.reset()
-			engine.pool.Put(ctx)
-		}()
-		engine.GetHandler(path)(ctx)
-	}
+    return func(c *gin.Context) {
+        path, err := module.NewPath(c.Request.URL.Path)
+        if err != nil {
+            return
+        }
+        ctx := engine.createContext(path, c)
+        defer func() {
+            ctx.reset()
+            engine.pool.Put(ctx)
+        }()
+        engine.GetHandler(path)(ctx)
+    }
 }
 
 // GetHandler chooses which processor to use based on the requested path
 func (engine *Engine) GetHandler(p *module.Path) func(*Context) {
-	backend := engine.GetBackend()
-	switch r := p.GetType(); r {
-	case module.TypePathList:
-		return backend.List
-	case module.TypePathInfo:
-		return backend.Info
-	case module.TypePathMod:
-		return backend.Mod
-	case module.TypePathZip:
-		return backend.Zip
-	case module.TypePathLatest:
-		return backend.Latest
-	default:
-		return discard
-	}
+    backend := engine.GetBackend()
+    switch r := p.GetType(); r {
+    case module.TypePathList:
+        return backend.List
+    case module.TypePathInfo:
+        return backend.Info
+    case module.TypePathMod:
+        return backend.Mod
+    case module.TypePathZip:
+        return backend.Zip
+    case module.TypePathLatest:
+        return backend.Latest
+    default:
+        return discard
+    }
 }
 
 func (engine *Engine) createContext(path *module.Path, c *gin.Context) *Context {
-	ctx := engine.pool.Get().(*Context)
-	ctx.reset()
-	ctx.Path = path
-	ctx.Context = c
-	return ctx
+    ctx := engine.pool.Get().(*Context)
+    ctx.reset()
+    ctx.Path = path
+    ctx.Context = c
+    return ctx
 }
 
 func (engine *Engine) allocateContext() *Context {
-	return &Context{engine: engine}
+    return &Context{engine: engine}
 }
 
 func init() {
-	gin.SetMode(gin.ReleaseMode)
-	gin.DefaultWriter = ioutil.Discard
+    gin.SetMode(gin.ReleaseMode)
+    gin.DefaultWriter = ioutil.Discard
 }

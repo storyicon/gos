@@ -15,96 +15,96 @@
 package meta
 
 import (
-	"net"
-	"os"
-	"sync/atomic"
+    "net"
+    "os"
+    "sync/atomic"
 
-	log "github.com/sirupsen/logrus"
+    log "github.com/sirupsen/logrus"
 )
 
 // Key of Environmental Variables
 const (
-	EnvGosUpstreamAddress = "GOS_UPSTREAM_ADDRESS"
-	EnvGosDebug           = "GOS_DEBUG"
+    EnvGosUpstreamAddress = "GOS_UPSTREAM_ADDRESS"
+    EnvGosDebug           = "GOS_DEBUG"
 )
 
 var v atomic.Value
 
 var defaultSysVar = SystemVar{
-	GoBinaryPath:    "go",
-	ProxyListenAddr: "",
-	UpstreamAddr:    "https://athens.azurefd.net",
+    GoBinaryPath:    "go",
+    ProxyListenAddr: "",
+    UpstreamAddr:    "https://athens.azurefd.net",
 }
 
 // SystemVar defines the structure of system variables
 type SystemVar struct {
-	GoBinaryPath    string
-	ProxyListenAddr string
-	UpstreamAddr    string
+    GoBinaryPath    string
+    ProxyListenAddr string
+    UpstreamAddr    string
 }
 
 // LoadConfig is used to load variables info to system variables
 func LoadConfig(variables SystemVar) {
-	v.Store(variables)
+    v.Store(variables)
 }
 
 // GetConfig is used to obtain the current config
 func GetConfig() SystemVar {
-	return v.Load().(SystemVar)
+    return v.Load().(SystemVar)
 }
 
 // SetUpstreamAddr is used to modify the upstream address of gos
 func SetUpstreamAddr(path string) {
-	config := GetConfig()
-	config.UpstreamAddr = path
-	LoadConfig(config)
+    config := GetConfig()
+    config.UpstreamAddr = path
+    LoadConfig(config)
 }
 
 // SetGoBinaryPath is used to modify the location of go binary files
 func SetGoBinaryPath(path string) {
-	config := GetConfig()
-	config.GoBinaryPath = path
-	LoadConfig(config)
+    config := GetConfig()
+    config.GoBinaryPath = path
+    LoadConfig(config)
 }
 
 // GetGoBinaryPath is used to get the GoBinaryPath currently configured
 func GetGoBinaryPath() string {
-	config := GetConfig()
-	return config.GoBinaryPath
+    config := GetConfig()
+    return config.GoBinaryPath
 }
 
 // GetLocalProxyListenAddr is used to get the ProxyListenAddr currently configured
 func GetLocalProxyListenAddr() string {
-	config := GetConfig()
-	return config.ProxyListenAddr
+    config := GetConfig()
+    return config.ProxyListenAddr
 }
 
 func init() {
-	address, err := allocateAddr()
-	if err != nil {
-		panic(err)
-	}
-	defaultSysVar.ProxyListenAddr = address
+    address, err := allocateAddr()
+    if err != nil {
+        panic(err)
+    }
+    defaultSysVar.ProxyListenAddr = address
 
-	upstream := os.Getenv(EnvGosUpstreamAddress)
-	if upstream != "" {
-		defaultSysVar.UpstreamAddr = upstream
-	}
+    upstream := os.Getenv(EnvGosUpstreamAddress)
+    if upstream != "" {
+        defaultSysVar.UpstreamAddr = upstream
+    }
 
-	debug := os.Getenv(EnvGosDebug)
-	if debug != "" {
-		log.SetLevel(log.DebugLevel)
-		log.Debugln("debug mode is on")
-	}
+    debug := os.Getenv(EnvGosDebug)
+    if debug != "" {
+        log.SetLevel(log.DebugLevel)
+        log.Debugln("debug mode is on")
+    }
 
-	LoadConfig(defaultSysVar)
+    LoadConfig(defaultSysVar)
 }
 
 func allocateAddr() (string, error) {
-	ln, err := net.Listen("tcp", ":0")
-	if err != nil {
-		return "", err
-	}
-	defer ln.Close()
-	return ln.Addr().String(), nil
+    ln, err := net.Listen("tcp", ":0")
+    if err != nil {
+        return "", err
+    }
+    defer ln.Close()
+    return ln.Addr().String(), nil
 }

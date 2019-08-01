@@ -17,32 +17,32 @@
 package proxy
 
 import (
-	"github.com/asaskevich/govalidator"
-	"github.com/storyicon/gos/pkg/meta"
+    "github.com/asaskevich/govalidator"
+    "github.com/storyicon/gos/pkg/meta"
 )
 
 // Config contains configuration information for the entire proxy project
 type Config struct {
-	UpstreamAddr string `valid:"url"`
-	ListenAddr   string `valid:"url"`
-	GoBinaryPath string
+    UpstreamAddr string `valid:"url"`
+    ListenAddr   string `valid:"url"`
+    GoBinaryPath string
 }
 
 func (c *Config) fix() error {
-	_, err := govalidator.ValidateStruct(c)
-	if err != nil {
-		return err
-	}
+    _, err := govalidator.ValidateStruct(c)
+    if err != nil {
+        return err
+    }
 
-	dc := meta.GetConfig()
-	if c.UpstreamAddr == "" {
-		c.UpstreamAddr = dc.UpstreamAddr
-	}
-	if c.GoBinaryPath == "" {
-		c.GoBinaryPath = dc.GoBinaryPath
-	}
-	if c.ListenAddr == "" {
-		c.ListenAddr = dc.ProxyListenAddr
-	}
-	return nil
+    dc := meta.GetConfig()
+    if c.UpstreamAddr == "" {
+        c.UpstreamAddr = dc.UpstreamAddr
+    }
+    if c.GoBinaryPath == "" {
+        c.GoBinaryPath = dc.GoBinaryPath
+    }
+    if c.ListenAddr == "" {
+        c.ListenAddr = dc.ProxyListenAddr
+    }
+    return nil
 }

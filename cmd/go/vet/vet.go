@@ -17,17 +17,17 @@
 package vet
 
 import (
-	"os"
+    "os"
 
-	"github.com/spf13/cobra"
-	"github.com/storyicon/gos/pkg/util"
+    "github.com/spf13/cobra"
+    "github.com/storyicon/gos/pkg/util"
 )
 
 // CmdVet runs the Go vet command on the packages named by the import paths
 var CmdVet = &cobra.Command{
-	Use:   "vet [-n] [-x] [-vettool prog] [build flags] [vet flags] [packages]",
-	Short: "report likely mistakes in packages",
-	Long: `
+    Use:   "vet [-n] [-x] [-vettool prog] [build flags] [vet flags] [packages]",
+    Short: "report likely mistakes in packages",
+    Long: `
 Vet runs the Go vet command on the packages named by the import paths.
 
 For more about vet and its flags, see 'go doc cmd/vet'.
@@ -51,15 +51,15 @@ For more about these flags, see 'go help build'.
 
 See also: go fmt, go fix.
 `,
-	DisableFlagParsing: true,
+    DisableFlagParsing: true,
 }
 
 func init() {
-	CmdVet.Run = func(cmd *cobra.Command, args []string) {
-		fd := util.GetGoBinaryCMD("vet", args)
-		fd.Env = util.GetEnvWithLocalProxy()
-		fd.Stdout = os.Stdout
-		fd.Stderr = os.Stderr
-		util.RunCMDWithExit(fd)
-	}
+    CmdVet.Run = func(cmd *cobra.Command, args []string) {
+        fd := util.GetGoBinaryCMD("vet", args)
+        fd.Env = util.GetEnvWithLocalProxy()
+        fd.Stdout = os.Stdout
+        fd.Stderr = os.Stderr
+        util.RunCMDWithExit(fd)
+    }
 }

@@ -15,16 +15,16 @@
 package get
 
 import (
-	"github.com/spf13/cobra"
-	"github.com/storyicon/gos/pkg/util"
-	"os"
+    "github.com/spf13/cobra"
+    "github.com/storyicon/gos/pkg/util"
+    "os"
 )
 
 // CmdGet get downloads the packages named by the import paths, along with their dependencies
 var CmdGet = &cobra.Command{
-	Use:   "get [-d] [-f] [-t] [-u] [-v] [-fix] [-insecure] [build flags] [packages]",
-	Short: "download and install packages and dependencies",
-	Long: `
+    Use:   "get [-d] [-f] [-t] [-u] [-v] [-fix] [-insecure] [build flags] [packages]",
+    Short: "download and install packages and dependencies",
+    Long: `
     Get downloads the packages named by the import paths, along with their
     dependencies. It then installs the named packages, like 'go install'.
     
@@ -80,16 +80,16 @@ var CmdGet = &cobra.Command{
     See 'go help modules' and 'go help module-get'.
     
     See also: go build, go install, go clean.
-		`,
-	DisableFlagParsing: true,
+        `,
+    DisableFlagParsing: true,
 }
 
 func init() {
-	CmdGet.Run = func(cmd *cobra.Command, args []string) {
-		fd := util.GetGoBinaryCMD("get", args)
-		fd.Env = util.GetEnvWithLocalProxy()
-		fd.Stdout = os.Stdout
-		fd.Stderr = os.Stderr
-		util.RunCMDWithExit(fd)
-	}
+    CmdGet.Run = func(cmd *cobra.Command, args []string) {
+        fd := util.GetGoBinaryCMD("get", args)
+        fd.Env = util.GetEnvWithLocalProxy()
+        fd.Stdout = os.Stdout
+        fd.Stderr = os.Stderr
+        util.RunCMDWithExit(fd)
+    }
 }

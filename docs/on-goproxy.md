@@ -35,9 +35,9 @@ https://tip.golang.org/cmd/go/#hdr-Module_proxy_protocol
 
 ```go
 var HelpGoproxy = &base.Command{
-	UsageLine: "goproxy",
-	Short:     "module proxy protocol",
-	Long: `
+    UsageLine: "goproxy",
+    Short:     "module proxy protocol",
+    Long: `
 The go command by default downloads modules from version control systems
 directly, just as 'go get' always has. The GOPROXY environment variable allows
 further control over the download source. If GOPROXY is unset, is the empty string,
@@ -52,28 +52,28 @@ be attempted at that point in the search.
 ...
 
 func proxyURLs() ([]string, error) {
-	proxyOnce.Do(func() {
-		for _, proxyURL := range strings.Split(proxyURL, ",") {
-			if proxyURL == "" {
-				continue
-			}
-			if proxyURL == "direct" {
-				proxyOnce.list = append(proxyOnce.list, "direct")
-				continue
-			}
+    proxyOnce.Do(func() {
+        for _, proxyURL := range strings.Split(proxyURL, ",") {
+            if proxyURL == "" {
+                continue
+            }
+            if proxyURL == "direct" {
+                proxyOnce.list = append(proxyOnce.list, "direct")
+                continue
+            }
 
-			// Check that newProxyRepo accepts the URL.
-			// It won't do anything with the path.
-			_, err := newProxyRepo(proxyURL, "golang.org/x/text")
-			if err != nil {
-				proxyOnce.err = err
-				return
-			}
-			proxyOnce.list = append(proxyOnce.list, proxyURL)
-		}
-	})
+            // Check that newProxyRepo accepts the URL.
+            // It won't do anything with the path.
+            _, err := newProxyRepo(proxyURL, "golang.org/x/text")
+            if err != nil {
+                proxyOnce.err = err
+                return
+            }
+            proxyOnce.list = append(proxyOnce.list, proxyURL)
+        }
+    })
 
-	return proxyOnce.list, proxyOnce.err
+    return proxyOnce.list, proxyOnce.err
 }
 ```
 

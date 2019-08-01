@@ -15,90 +15,90 @@
 package cross
 
 import (
-	"io/ioutil"
-	"runtime"
+    "io/ioutil"
+    "runtime"
 
-	"bytes"
+    "bytes"
 
-	"fmt"
+    "fmt"
 
-	"path"
-	"strings"
+    "path"
+    "strings"
 
-	"os"
+    "os"
 
-	"github.com/storyicon/gos/pkg/util"
+    "github.com/storyicon/gos/pkg/util"
 )
 
 // Workhorse is a compilation unit
 type Workhorse struct {
-	Package    string
-	StandardGO []string
-	Output     string
-	Platform
+    Package    string
+    StandardGO []string
+    Output     string
+    Platform
 }
 
 // Compile is the highlight
 func (h *Workhorse) Compile() error {
-	env := append(util.GetEnvWithLocalProxy(),
-		"GOOS="+h.OS,
-		"GOARCH="+h.Arch,
-		h.GetCGOEnv(),
-	)
-	// In order to avoid duplicate names
-	output, err := h.GetRealOutput()
-	if err != nil {
-		return err
-	}
+    env := append(util.GetEnvWithLocalProxy(),
+        "GOOS="+h.OS,
+        "GOARCH="+h.Arch,
+        h.GetCGOEnv(),
+    )
+    // In order to avoid duplicate names
+    output, err := h.GetRealOutput()
+    if err != nil {
+        return err
+    }
 
-	stderr := &bytes.Buffer{}
-	args := append(h.StandardGO, "-o", output, h.Package)
+    stderr := &bytes.Buffer{}
+    args := append(h.StandardGO, "-o", output, h.Package)
 
-	cmd := util.GetGoBinaryCMD("build", args)
-	cmd.Env = env
-	cmd.Stdout = ioutil.Discard
-	cmd.Stderr = stderr
+    cmd := util.GetGoBinaryCMD("build", args)
+    cmd.Env = env
+    cmd.Stdout = ioutil.Discard
+    cmd.Stderr = stderr
 
-	if err := cmd.Run(); err != nil {
-		err = fmt.Errorf("%s: %s", h.Platform.String(), stderr.String())
-		return err
-	}
-	return nil
+    if err := cmd.Run(); err != nil {
+        err = fmt.Errorf("%s: %s", h.Platform.String(), stderr.String())
+        return err
+    }
+    return nil
 }
 
 // GetCGOEnv is used to determine whether to enable CGO
 // when there is no corresponding environment variable.
 func (h *Workhorse) GetCGOEnv() string {
-	Cgo := os.Getenv("CGO_ENABLED")
-	if Cgo == "" {
-		if runtime.GOOS == h.OS && runtime.GOARCH == h.Arch {
-			Cgo = "1"
-		} else {
-			Cgo = "0"
-		}
-	}
-	return fmt.Sprintf("CGO_ENABLED=%s", Cgo)
+    Cgo := os.Getenv("CGO_ENABLED")
+    if Cgo == "" {
+        if runtime.GOOS == h.OS && runtime.GOARCH == h.Arch {
+            Cgo = "1"
+        } else {
+            Cgo = "0"
+        }
+    }
+    return fmt.Sprintf("CGO_ENABLED=%s", Cgo)
 }
 
 // GetRealOutput is used to generate the real output address
 func (h *Workhorse) GetRealOutput() (string, error) {
-	if h.Output == "" {
-		ext := path.Ext(h.Package)
-		if ext != ".go" {
-			return "", ErrMissingGoFile
-		}
-		h.Output = strings.TrimRight(h.Package, ext)
-	}
+    if h.Output == "" {
+        ext := path.Ext(h.Package)
+        if ext != ".go" {
+            return "", ErrMissingGoFile
+        }
+        h.Output = strings.TrimRight(h.Package, ext)
+    }
 
-	output := strings.Join([]string{
-		h.Output,
-		h.OS,
-		h.Arch,
-	}, "_")
+    output := strings.Join([]string{
+        h.Output,
+        h.OS,
+        h.Arch,
+    }, "_")
 
-	if h.OS == "windows" {
-		output += ".exe"
-	}
+    if h.OS == "windows" {
+        output += ".exe"
+    }
 
-	return output, nil
+    return output, nil
 }

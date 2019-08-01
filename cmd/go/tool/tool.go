@@ -17,17 +17,17 @@
 package tool
 
 import (
-	"os"
+    "os"
 
-	"github.com/spf13/cobra"
-	"github.com/storyicon/gos/pkg/util"
+    "github.com/spf13/cobra"
+    "github.com/storyicon/gos/pkg/util"
 )
 
 // CmdTool runs the go tool command identified by the arguments.
 var CmdTool = &cobra.Command{
-	Use:   "tool [-n] command [args...]",
-	Short: "run specified go tool",
-	Long: `
+    Use:   "tool [-n] command [args...]",
+    Short: "run specified go tool",
+    Long: `
 Tool runs the go tool command identified by the arguments.
 With no arguments it prints the list of known tools.
 
@@ -36,15 +36,15 @@ executed but not execute it.
 
 For more about each tool command, see 'go doc cmd/<command>'.
 `,
-	DisableFlagParsing: true,
+    DisableFlagParsing: true,
 }
 
 func init() {
-	CmdTool.Run = func(cmd *cobra.Command, args []string) {
-		fd := util.GetGoBinaryCMD("tool", args)
-		fd.Env = util.GetEnvWithLocalProxy()
-		fd.Stdout = os.Stdout
-		fd.Stderr = os.Stderr
-		util.RunCMDWithExit(fd)
-	}
+    CmdTool.Run = func(cmd *cobra.Command, args []string) {
+        fd := util.GetGoBinaryCMD("tool", args)
+        fd.Env = util.GetEnvWithLocalProxy()
+        fd.Stdout = os.Stdout
+        fd.Stderr = os.Stderr
+        util.RunCMDWithExit(fd)
+    }
 }

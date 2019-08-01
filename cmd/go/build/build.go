@@ -15,17 +15,17 @@
 package build
 
 import (
-	"os"
+    "os"
 
-	"github.com/spf13/cobra"
-	"github.com/storyicon/gos/pkg/util"
+    "github.com/spf13/cobra"
+    "github.com/storyicon/gos/pkg/util"
 )
 
 // CmdBuild compiles the packages named by the import paths, along with their dependencies, but it does not install the results.
 var CmdBuild = &cobra.Command{
-	Use:   "build [-o output] [-i] [build flags] [packages]",
-	Short: "compile packages and dependencies",
-	Long: `
+    Use:   "build [-o output] [-i] [build flags] [packages]",
+    Short: "compile packages and dependencies",
+    Long: `
 Build compiles the packages named by the import paths,
 along with their dependencies, but it does not install the results.
 
@@ -54,66 +54,66 @@ The -i flag installs the packages that are dependencies of the target.
 The build flags are shared by the build, clean, get, install, list, run,
 and test commands:
 
-	-a
-		force rebuilding of packages that are already up-to-date.
-	-n
-		print the commands but do not run them.
-	-p n
-		the number of programs, such as build commands or
-		test binaries, that can be run in parallel.
-		The default is the number of CPUs available.
-	-race
-		enable data race detection.
-		Supported only on linux/amd64, freebsd/amd64, darwin/amd64 and windows/amd64.
-	-msan
-		enable interoperation with memory sanitizer.
-		Supported only on linux/amd64, linux/arm64
-		and only with Clang/LLVM as the host C compiler.
-	-v
-		print the names of packages as they are compiled.
-	-work
-		print the name of the temporary work directory and
-		do not delete it when exiting.
-	-x
-		print the commands.
+    -a
+        force rebuilding of packages that are already up-to-date.
+    -n
+        print the commands but do not run them.
+    -p n
+        the number of programs, such as build commands or
+        test binaries, that can be run in parallel.
+        The default is the number of CPUs available.
+    -race
+        enable data race detection.
+        Supported only on linux/amd64, freebsd/amd64, darwin/amd64 and windows/amd64.
+    -msan
+        enable interoperation with memory sanitizer.
+        Supported only on linux/amd64, linux/arm64
+        and only with Clang/LLVM as the host C compiler.
+    -v
+        print the names of packages as they are compiled.
+    -work
+        print the name of the temporary work directory and
+        do not delete it when exiting.
+    -x
+        print the commands.
 
-	-asmflags '[pattern=]arg list'
-		arguments to pass on each go tool asm invocation.
-	-buildmode mode
-		build mode to use. See 'go help buildmode' for more.
-	-compiler name
-		name of compiler to use, as in runtime.Compiler (gccgo or gc).
-	-gccgoflags '[pattern=]arg list'
-		arguments to pass on each gccgo compiler/linker invocation.
-	-gcflags '[pattern=]arg list'
-		arguments to pass on each go tool compile invocation.
-	-installsuffix suffix
-		a suffix to use in the name of the package installation directory,
-		in order to keep output separate from default builds.
-		If using the -race flag, the install suffix is automatically set to race
-		or, if set explicitly, has _race appended to it. Likewise for the -msan
-		flag. Using a -buildmode option that requires non-default compile flags
-		has a similar effect.
-	-ldflags '[pattern=]arg list'
-		arguments to pass on each go tool link invocation.
-	-linkshared
-		link against shared libraries previously created with
-		-buildmode=shared.
-	-mod mode
-		module download mode to use: readonly or vendor.
-		See 'go help modules' for more.
-	-pkgdir dir
-		install and load all packages from dir instead of the usual locations.
-		For example, when building with a non-standard configuration,
-		use -pkgdir to keep generated packages in a separate location.
-	-tags 'tag list'
-		a space-separated list of build tags to consider satisfied during the
-		build. For more information about build tags, see the description of
-		build constraints in the documentation for the go/build package.
-	-toolexec 'cmd args'
-		a program to use to invoke toolchain programs like vet and asm.
-		For example, instead of running asm, the go command will run
-		'cmd args /path/to/asm <arguments for asm>'.
+    -asmflags '[pattern=]arg list'
+        arguments to pass on each go tool asm invocation.
+    -buildmode mode
+        build mode to use. See 'go help buildmode' for more.
+    -compiler name
+        name of compiler to use, as in runtime.Compiler (gccgo or gc).
+    -gccgoflags '[pattern=]arg list'
+        arguments to pass on each gccgo compiler/linker invocation.
+    -gcflags '[pattern=]arg list'
+        arguments to pass on each go tool compile invocation.
+    -installsuffix suffix
+        a suffix to use in the name of the package installation directory,
+        in order to keep output separate from default builds.
+        If using the -race flag, the install suffix is automatically set to race
+        or, if set explicitly, has _race appended to it. Likewise for the -msan
+        flag. Using a -buildmode option that requires non-default compile flags
+        has a similar effect.
+    -ldflags '[pattern=]arg list'
+        arguments to pass on each go tool link invocation.
+    -linkshared
+        link against shared libraries previously created with
+        -buildmode=shared.
+    -mod mode
+        module download mode to use: readonly or vendor.
+        See 'go help modules' for more.
+    -pkgdir dir
+        install and load all packages from dir instead of the usual locations.
+        For example, when building with a non-standard configuration,
+        use -pkgdir to keep generated packages in a separate location.
+    -tags 'tag list'
+        a space-separated list of build tags to consider satisfied during the
+        build. For more information about build tags, see the description of
+        build constraints in the documentation for the go/build package.
+    -toolexec 'cmd args'
+        a program to use to invoke toolchain programs like vet and asm.
+        For example, instead of running asm, the go command will run
+        'cmd args /path/to/asm <arguments for asm>'.
 
 The -asmflags, -gccgoflags, -gcflags, and -ldflags flags accept a
 space-separated list of arguments to pass to an underlying tool
@@ -144,16 +144,16 @@ invocations such as 'go tool compile' and 'go tool link' to avoid
 some of the overheads and design decisions of the build tool.
 
 See also: go install, go get, go clean.
-		`,
-	DisableFlagParsing: true,
+        `,
+    DisableFlagParsing: true,
 }
 
 func init() {
-	CmdBuild.Run = func(cmd *cobra.Command, args []string) {
-		fd := util.GetGoBinaryCMD("build", args)
-		fd.Env = util.GetEnvWithLocalProxy()
-		fd.Stdout = os.Stdout
-		fd.Stderr = os.Stderr
-		util.RunCMDWithExit(fd)
-	}
+    CmdBuild.Run = func(cmd *cobra.Command, args []string) {
+        fd := util.GetGoBinaryCMD("build", args)
+        fd.Env = util.GetEnvWithLocalProxy()
+        fd.Stdout = os.Stdout
+        fd.Stderr = os.Stderr
+        util.RunCMDWithExit(fd)
+    }
 }

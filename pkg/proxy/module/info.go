@@ -20,6 +20,6 @@ import "time"
 
 // Info is the standard return value, which corresponds to *.info in go cache
 type Info struct {
-	Version string
-	Time    time.Time
+    Version string
+    Time    time.Time
 }
