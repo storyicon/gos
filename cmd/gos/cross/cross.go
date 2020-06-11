@@ -15,19 +15,19 @@
 package cross
 
 import (
-    "log"
-    "runtime"
-    "sync"
+	"log"
+	"runtime"
+	"sync"
 
-    "github.com/hashicorp/go-multierror"
-    "github.com/spf13/cobra"
+	"github.com/hashicorp/go-multierror"
+	"github.com/spf13/cobra"
 )
 
 // CmdCross is the command line for cross compilation
 var CmdCross = &cobra.Command{
-    Use:   "cross [common go build flags] [file] [darwin|linux|windows|freebsd|netbsd|all] [amd64|386|arm|s390x|mips|mipsle|mips64|mips64le|all]",
-    Short: "agile and fast cross compiling",
-    Long: `
+	Use:   "cross [common go build flags] [file] [darwin|linux|windows|freebsd|netbsd|all] [amd64|386|arm|s390x|mips|mipsle|mips64|mips64le|all]",
+	Short: "agile and fast cross compiling",
+	Long: `
 Usage:
     gos cross [common go build flags] [-e] [go file] [os] [arch]
 
@@ -52,64 +52,64 @@ Usage:
     - Compile with error info printed
     gos cross -e main.go all all
     `,
-    DisableFlagParsing: true,
+	DisableFlagParsing: true,
 }
 
 func init() {
-    CmdCross.Run = Run
+	CmdCross.Run = Run
 }
 
 // Run command
 func Run(cmd *cobra.Command, args []string) {
-    if len(args) == 1 {
-        if arg := args[0]; arg == "-h" || arg == "help" {
-            printUsage()
-            return
-        }
-    }
+	if len(args) == 1 {
+		if arg := args[0]; arg == "-h" || arg == "help" {
+			printUsage()
+			return
+		}
+	}
 
-    options, err := NewOptions(args)
-    if err != nil {
-        log.Println(err)
-        return
-    }
+	options, err := NewOptions(args)
+	if err != nil {
+		log.Println(err)
+		return
+	}
 
-    horses, err := options.GetCompileWorkhorse()
-    if err != nil {
-        log.Println(err)
-        return
-    }
+	horses, err := options.GetCompileWorkhorse()
+	if err != nil {
+		log.Println(err)
+		return
+	}
 
-    var wg sync.WaitGroup
-    var lock sync.Mutex
-    var errs error
-    threads := make(chan bool, runtime.NumCPU())
-    for _, horse := range horses {
-        wg.Add(1)
-        threads <- true
-        go func(horse *Workhorse) {
-            defer func() {
-                wg.Done()
-                <-threads
-            }()
-            err := horse.Compile()
-            platform := horse.Platform.String()
-            if err != nil {
-                log.Printf("* %s: failed", platform)
-                lock.Lock()
-                defer lock.Unlock()
-                errs = multierror.Append(errs, err)
-                return
-            }
-            log.Printf("* %s: successed", platform)
-        }(horse)
-    }
-    wg.Wait()
-    if errs != nil && options.ShowErr {
-        log.Println(errs)
-    }
+	var wg sync.WaitGroup
+	var lock sync.Mutex
+	var errs error
+	threads := make(chan bool, runtime.NumCPU())
+	for _, horse := range horses {
+		wg.Add(1)
+		threads <- true
+		go func(horse *Workhorse) {
+			defer func() {
+				wg.Done()
+				<-threads
+			}()
+			err := horse.Compile()
+			platform := horse.Platform.String()
+			if err != nil {
+				log.Printf("* %s: failed", platform)
+				lock.Lock()
+				defer lock.Unlock()
+				errs = multierror.Append(errs, err)
+				return
+			}
+			log.Printf("* %s: succeeded", platform)
+		}(horse)
+	}
+	wg.Wait()
+	if errs != nil && options.ShowErr {
+		log.Println(errs)
+	}
 }
 
 func printUsage() {
-    log.Println(CmdCross.Long)
+	log.Println(CmdCross.Long)
 }
