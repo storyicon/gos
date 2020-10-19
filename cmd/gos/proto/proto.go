@@ -23,6 +23,7 @@ import (
     "os/exec"
     "path/filepath"
     "runtime"
+    "strings"
     "sync"
 
     "github.com/storyicon/gos/pkg/concurrent"
@@ -53,28 +54,39 @@ Usage:
     - Compile all proto files in the current directory and all subdirectories
     gos proto all/all
 `,
-    Args: cobra.ExactArgs(1),
+    Args:               cobra.MinimumNArgs(1),
+    DisableFlagParsing: true,
 }
 
 func init() {
     CmdProto.Run = Run
 }
 
+// GoPath is the go path
+var GoPath = os.Getenv("GOPATH")
+
 // GoPathSrc is the address of $GOPATH/src
-var GoPathSrc = filepath.Join(os.Getenv("GOPATH"), "src")
+var GoPathSrc = filepath.Join(GoPath, "src")
 
 // Run command
-func Run(cmd *cobra.Command, args []string) {
+func Run(cmd *cobra.Command, in []string) {
+    args, flags := filterArgs(in)
+    if len(args) == 0 {
+        log.Println("no args provided")
+        os.Exit(1)
+        return
+    }
+
     proto := args[0]
 
     var err error
     switch proto {
     case "all":
-        err = WalkCurrent()
+        err = WalkCurrent(flags)
     case "all/all":
-        err = WalkIter()
+        err = WalkIter(flags)
     default:
-        err = Generate(proto)
+        err = Generate(proto, flags)
     }
 
     if err != nil {
@@ -85,9 +97,20 @@ func Run(cmd *cobra.Command, args []string) {
     log.Println("Good job, you are ready to go :)")
 }
 
+func filterArgs(in []string) (args []string, flags []string) {
+    for _, arg := range in {
+        if strings.HasPrefix("--", arg) {
+            flags = append(flags, arg)
+        } else {
+            args = append(args, arg)
+        }
+    }
+    return args, flags
+}
+
 // WalkIter is used to traverse the current folder and its subfolders,
 // find all proto files and execute the generate command
-func WalkIter() error {
+func WalkIter(flags []string) error {
     dir, err := os.Getwd()
     if err != nil {
         return err
@@ -108,7 +131,7 @@ func WalkIter() error {
             if ext != ".proto" {
                 return
             }
-            err = Generate(path)
+            err = Generate(path, flags)
             if err != nil {
                 lock.Lock()
                 errs = multierror.Append(errs, err)
@@ -128,7 +151,7 @@ func WalkIter() error {
 
 // WalkCurrent is used to traverse all proto files
 // in the current folder and execute the generate command
-func WalkCurrent() error {
+func WalkCurrent(flags []string) error {
     dir, err := os.Getwd()
     if err != nil {
         return err
@@ -155,7 +178,7 @@ func WalkCurrent() error {
         c.Add(1)
         go func(name string) {
             defer c.Done()
-            err := Generate(name)
+            err := Generate(name, flags)
             if err != nil {
                 lock.Lock()
                 defer lock.Unlock()
@@ -168,14 +191,15 @@ func WalkCurrent() error {
 }
 
 // Generate is used to execute the generate command for the specified proto file
-func Generate(proto string) error {
+func Generate(proto string, flags []string) error {
     path, name := filepath.Split(proto)
-    fd := exec.Command("protoc", []string{
+    fd := exec.Command("protoc", append([]string{
+        "--proto_path=" + GoPath,
         "--proto_path=" + GoPathSrc,
         "--go_out=plugins=grpc:.",
         "--proto_path=.",
         name,
-    }...)
+    }, flags...)...)
     stderr := &bytes.Buffer{}
     fd.Stdout = stderr
     fd.Stderr = stderr
